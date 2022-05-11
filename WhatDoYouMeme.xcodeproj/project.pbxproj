@@ -39,6 +39,8 @@
 		2DA91A1D282C36550081686A /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DA91A1C282C36550081686A /* FirestoreService.swift */; };
 		2DA91A20282C39210081686A /* Lobbie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DA91A1F282C39210081686A /* Lobbie.swift */; };
 		2DA91A22282C399B0081686A /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DA91A21282C399B0081686A /* Player.swift */; };
+		2DA91A24282C48710081686A /* LobbiesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DA91A23282C48710081686A /* LobbiesListCell.swift */; };
+		2DA91A26282C49D40081686A /* LobbiesListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DA91A25282C49D40081686A /* LobbiesListInteractor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -73,6 +75,8 @@
 		2DA91A1C282C36550081686A /* FirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
 		2DA91A1F282C39210081686A /* Lobbie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lobbie.swift; sourceTree = "<group>"; };
 		2DA91A21282C399B0081686A /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		2DA91A23282C48710081686A /* LobbiesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbiesListCell.swift; sourceTree = "<group>"; };
+		2DA91A25282C49D40081686A /* LobbiesListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbiesListInteractor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -223,7 +227,9 @@
 			isa = PBXGroup;
 			children = (
 				2D9E37CE282C099C00CC54C5 /* LobbiesListController.swift */,
+				2DA91A25282C49D40081686A /* LobbiesListInteractor.swift */,
 				2D9E37D0282C0A3000CC54C5 /* LobbiesListView.swift */,
+				2DA91A23282C48710081686A /* LobbiesListCell.swift */,
 			);
 			path = LobbiesList;
 			sourceTree = "<group>";
@@ -345,10 +351,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2DA91A26282C49D40081686A /* LobbiesListInteractor.swift in Sources */,
 				2D9E37CC282C050E00CC54C5 /* UIViewController+Extension.swift in Sources */,
 				2D9E37B4282BC69700CC54C5 /* String+Extension.swift in Sources */,
 				2D9E37C3282C029A00CC54C5 /* SettingsController.swift in Sources */,
 				2D9E37B6282BC9C700CC54C5 /* UIBarButton+Extension.swift in Sources */,
+				2DA91A24282C48710081686A /* LobbiesListCell.swift in Sources */,
 				2DA91A22282C399B0081686A /* Player.swift in Sources */,
 				2D9E3789282BBF6300CC54C5 /* AppDelegate.swift in Sources */,
 				2D9E37B9282BCC5000CC54C5 /* MemesButton.swift in Sources */,

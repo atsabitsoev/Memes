@@ -19,7 +19,8 @@ final class BigFactory {
     }
 
     func makeLobbiesListVC(withNavigator: Bool = false) -> UIViewController {
-        let lobbiesListVC = LobbiesListController()
+        let interactor = LobbiesListInteractor()
+        let lobbiesListVC = LobbiesListController(interactor: interactor)
         return withNavigator ? lobbiesListVC.navigated(by: makeNavigator()) : lobbiesListVC
     }
 

@@ -13,4 +13,7 @@ extension UIColor {
     static let primaryButton: UIColor = UIColor.systemBlue
     static let defaultButton: UIColor = UIColor.systemBackground
     static let defaultButtonTitle: UIColor = UIColor.label
+
+    static let lobbieListCardBackground: UIColor = UIColor.systemBackground
+    static let lobbieListCardHighlighted: UIColor = UIColor.lightGray
 }

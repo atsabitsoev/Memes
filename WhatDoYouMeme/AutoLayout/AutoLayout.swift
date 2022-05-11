@@ -10,5 +10,6 @@ import CoreGraphics
 enum AutoLayout {
     enum Constants {
         static var baseHorizontalInset: CGFloat { 16 }
+        static var baseTopInset: CGFloat { 24 }
     }
 }
