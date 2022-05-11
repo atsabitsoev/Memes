@@ -36,6 +36,9 @@
 		2DA91A16282C30C80081686A /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 2DA91A15282C30C80081686A /* FirebaseFirestore */; };
 		2DA91A18282C30C80081686A /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = 2DA91A17282C30C80081686A /* FirebaseFunctions */; };
 		2DA91A1A282C30C80081686A /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 2DA91A19282C30C80081686A /* FirebaseMessaging */; };
+		2DA91A1D282C36550081686A /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DA91A1C282C36550081686A /* FirestoreService.swift */; };
+		2DA91A20282C39210081686A /* Lobbie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DA91A1F282C39210081686A /* Lobbie.swift */; };
+		2DA91A22282C399B0081686A /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DA91A21282C399B0081686A /* Player.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,6 +70,9 @@
 		2D9E37D3282C0E2300CC54C5 /* CreateGameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGameController.swift; sourceTree = "<group>"; };
 		2D9E37D5282C0EA700CC54C5 /* CreateGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGameView.swift; sourceTree = "<group>"; };
 		2D9E37DA282C195800CC54C5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		2DA91A1C282C36550081686A /* FirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
+		2DA91A1F282C39210081686A /* Lobbie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lobbie.swift; sourceTree = "<group>"; };
+		2DA91A21282C399B0081686A /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +111,8 @@
 			isa = PBXGroup;
 			children = (
 				2D9E37DA282C195800CC54C5 /* GoogleService-Info.plist */,
+				2DA91A1E282C39190081686A /* Models */,
+				2DA91A1B282C36420081686A /* Services */,
 				2D9E37B7282BCC1100CC54C5 /* MemesUIKit */,
 				2D9E37A2282BC12A00CC54C5 /* UI+Extension */,
 				2D9E37B2282BC68100CC54C5 /* Primitives+Extension */,
@@ -237,6 +245,23 @@
 			path = UIViewController;
 			sourceTree = "<group>";
 		};
+		2DA91A1B282C36420081686A /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				2DA91A1C282C36550081686A /* FirestoreService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		2DA91A1E282C39190081686A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				2DA91A1F282C39210081686A /* Lobbie.swift */,
+				2DA91A21282C399B0081686A /* Player.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -324,13 +349,16 @@
 				2D9E37B4282BC69700CC54C5 /* String+Extension.swift in Sources */,
 				2D9E37C3282C029A00CC54C5 /* SettingsController.swift in Sources */,
 				2D9E37B6282BC9C700CC54C5 /* UIBarButton+Extension.swift in Sources */,
+				2DA91A22282C399B0081686A /* Player.swift in Sources */,
 				2D9E3789282BBF6300CC54C5 /* AppDelegate.swift in Sources */,
 				2D9E37B9282BCC5000CC54C5 /* MemesButton.swift in Sources */,
 				2D9E37B1282BC59E00CC54C5 /* LocalizedString.swift in Sources */,
+				2DA91A1D282C36550081686A /* FirestoreService.swift in Sources */,
 				2D9E37CF282C099C00CC54C5 /* LobbiesListController.swift in Sources */,
 				2D9E37D6282C0EA700CC54C5 /* CreateGameView.swift in Sources */,
 				2D9E37C7282C03D300CC54C5 /* MainMenuCoordinator.swift in Sources */,
 				2D9E37BF282BD00100CC54C5 /* UIStackView+Extension.swift in Sources */,
+				2DA91A20282C39210081686A /* Lobbie.swift in Sources */,
 				2D9E37C5282C031800CC54C5 /* SettingsView.swift in Sources */,
 				2D9E37D4282C0E2300CC54C5 /* CreateGameController.swift in Sources */,
 				2D9E37A6282BC19A00CC54C5 /* BigFactory.swift in Sources */,
