@@ -1,0 +1,21 @@
+/* 
+  Strings.strings
+  WhatDoYouMeme
+
+  Created by Ацамаз Бицоев on 11.05.2022.
+  
+*/
+
+mainMenu.title = "Мемес";
+mainMenu.searchGame = "Искать игру";
+mainMenu.createGame = "Создать игру";
+
+settings.title = "Настройки";
+
+lobbiesList.title = "Поиск игры";
+
+createGame.title = "Создать игру";
+createGame.closeAlertTitle = "Вы уверены?";
+createGame.closeAlertMessage = "Весь прогресс будет потерян.";
+createGame.closeAlertOkAction = "Да";
+createGame.closeAlertCancelAction = "Нет";
