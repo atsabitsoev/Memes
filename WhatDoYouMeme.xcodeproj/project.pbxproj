@@ -30,6 +30,12 @@
 		2D9E37D1282C0A3000CC54C5 /* LobbiesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9E37D0282C0A3000CC54C5 /* LobbiesListView.swift */; };
 		2D9E37D4282C0E2300CC54C5 /* CreateGameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9E37D3282C0E2300CC54C5 /* CreateGameController.swift */; };
 		2D9E37D6282C0EA700CC54C5 /* CreateGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9E37D5282C0EA700CC54C5 /* CreateGameView.swift */; };
+		2D9E37DB282C195800CC54C5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2D9E37DA282C195800CC54C5 /* GoogleService-Info.plist */; };
+		2DA91A12282C30C80081686A /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 2DA91A11282C30C80081686A /* FirebaseAnalytics */; };
+		2DA91A14282C30C80081686A /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 2DA91A13282C30C80081686A /* FirebaseAuth */; };
+		2DA91A16282C30C80081686A /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 2DA91A15282C30C80081686A /* FirebaseFirestore */; };
+		2DA91A18282C30C80081686A /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = 2DA91A17282C30C80081686A /* FirebaseFunctions */; };
+		2DA91A1A282C30C80081686A /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 2DA91A19282C30C80081686A /* FirebaseMessaging */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,6 +66,7 @@
 		2D9E37D0282C0A3000CC54C5 /* LobbiesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbiesListView.swift; sourceTree = "<group>"; };
 		2D9E37D3282C0E2300CC54C5 /* CreateGameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGameController.swift; sourceTree = "<group>"; };
 		2D9E37D5282C0EA700CC54C5 /* CreateGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGameView.swift; sourceTree = "<group>"; };
+		2D9E37DA282C195800CC54C5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +74,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2DA91A12282C30C80081686A /* FirebaseAnalytics in Frameworks */,
+				2DA91A14282C30C80081686A /* FirebaseAuth in Frameworks */,
+				2DA91A1A282C30C80081686A /* FirebaseMessaging in Frameworks */,
+				2DA91A16282C30C80081686A /* FirebaseFirestore in Frameworks */,
+				2DA91A18282C30C80081686A /* FirebaseFunctions in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -92,6 +104,7 @@
 		2D9E3787282BBF6300CC54C5 /* WhatDoYouMeme */ = {
 			isa = PBXGroup;
 			children = (
+				2D9E37DA282C195800CC54C5 /* GoogleService-Info.plist */,
 				2D9E37B7282BCC1100CC54C5 /* MemesUIKit */,
 				2D9E37A2282BC12A00CC54C5 /* UI+Extension */,
 				2D9E37B2282BC68100CC54C5 /* Primitives+Extension */,
@@ -240,6 +253,13 @@
 			dependencies = (
 			);
 			name = WhatDoYouMeme;
+			packageProductDependencies = (
+				2DA91A11282C30C80081686A /* FirebaseAnalytics */,
+				2DA91A13282C30C80081686A /* FirebaseAuth */,
+				2DA91A15282C30C80081686A /* FirebaseFirestore */,
+				2DA91A17282C30C80081686A /* FirebaseFunctions */,
+				2DA91A19282C30C80081686A /* FirebaseMessaging */,
+			);
 			productName = WhatDoYouMeme;
 			productReference = 2D9E3785282BBF6300CC54C5 /* WhatDoYouMeme.app */;
 			productType = "com.apple.product-type.application";
@@ -269,6 +289,9 @@
 				ru,
 			);
 			mainGroup = 2D9E377C282BBF6300CC54C5;
+			packageReferences = (
+				2DA91A10282C30C80081686A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = 2D9E3786282BBF6300CC54C5 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -284,6 +307,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2D9E3795282BBF6400CC54C5 /* LaunchScreen.storyboard in Resources */,
+				2D9E37DB282C195800CC54C5 /* GoogleService-Info.plist in Resources */,
 				2D9E3792282BBF6400CC54C5 /* Assets.xcassets in Resources */,
 				2D9E37AC282BC52C00CC54C5 /* Localizable.strings in Resources */,
 			);
@@ -539,6 +563,45 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		2DA91A10282C30C80081686A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		2DA91A11282C30C80081686A /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2DA91A10282C30C80081686A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		2DA91A13282C30C80081686A /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2DA91A10282C30C80081686A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		2DA91A15282C30C80081686A /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2DA91A10282C30C80081686A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		2DA91A17282C30C80081686A /* FirebaseFunctions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2DA91A10282C30C80081686A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFunctions;
+		};
+		2DA91A19282C30C80081686A /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2DA91A10282C30C80081686A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 2D9E377D282BBF6300CC54C5 /* Project object */;
 }
