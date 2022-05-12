@@ -19,3 +19,6 @@ createGame.closeAlertTitle = "Are you sure?";
 createGame.closeAlertMessage = "All progress will be lost.";
 createGame.closeAlertOkAction = "Yes";
 createGame.closeAlertCancelAction = "No";
+
+createGame.nameTextfieldPlaceholder = "Enter title";
+createGame.createButtonTitle = "Create";

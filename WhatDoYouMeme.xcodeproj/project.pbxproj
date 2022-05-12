@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2D800E64282D4D4800D6FA37 /* MemesTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D800E63282D4D4800D6FA37 /* MemesTextfield.swift */; };
 		2D9E3789282BBF6300CC54C5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9E3788282BBF6300CC54C5 /* AppDelegate.swift */; };
 		2D9E378B282BBF6300CC54C5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9E378A282BBF6300CC54C5 /* SceneDelegate.swift */; };
 		2D9E3792282BBF6400CC54C5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2D9E3791282BBF6400CC54C5 /* Assets.xcassets */; };
@@ -44,6 +45,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2D800E63282D4D4800D6FA37 /* MemesTextfield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemesTextfield.swift; sourceTree = "<group>"; };
 		2D9E3785282BBF6300CC54C5 /* WhatDoYouMeme.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhatDoYouMeme.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D9E3788282BBF6300CC54C5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2D9E378A282BBF6300CC54C5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -183,6 +185,7 @@
 			isa = PBXGroup;
 			children = (
 				2D9E37B8282BCC5000CC54C5 /* MemesButton.swift */,
+				2D800E63282D4D4800D6FA37 /* MemesTextfield.swift */,
 			);
 			path = MemesUIKit;
 			sourceTree = "<group>";
@@ -356,6 +359,7 @@
 				2D9E37B4282BC69700CC54C5 /* String+Extension.swift in Sources */,
 				2D9E37C3282C029A00CC54C5 /* SettingsController.swift in Sources */,
 				2D9E37B6282BC9C700CC54C5 /* UIBarButton+Extension.swift in Sources */,
+				2D800E64282D4D4800D6FA37 /* MemesTextfield.swift in Sources */,
 				2DA91A24282C48710081686A /* LobbiesListCell.swift in Sources */,
 				2DA91A22282C399B0081686A /* Player.swift in Sources */,
 				2D9E3789282BBF6300CC54C5 /* AppDelegate.swift in Sources */,
@@ -533,6 +537,7 @@
 				INFOPLIST_FILE = WhatDoYouMeme/SupportingFiles/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -561,6 +566,7 @@
 				INFOPLIST_FILE = WhatDoYouMeme/SupportingFiles/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;

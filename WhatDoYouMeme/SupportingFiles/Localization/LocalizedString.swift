@@ -26,6 +26,9 @@ enum LocalizedString {
         static var closeAlertMessage: String { "createGame.closeAlertMessage".localized() }
         static var closeAlertOkAction: String { "createGame.closeAlertOkAction".localized() }
         static var closeAlertCancelAction: String { "createGame.closeAlertCancelAction".localized() }
+
+        static var nameTextfieldPlaceholder: String { "createGame.nameTextfieldPlaceholder".localized() }
+        static var createButtonTitle: String { "createGame.createButtonTitle".localized() }
     }
 }
 

@@ -23,8 +23,19 @@ final class CreateGameController: UIViewController {
         addCloseButton()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        createGameView.activateNameTextfield()
+    }
+
     override func onCloseTap() {
         closeAlert()
+    }
+
+
+    @objc
+    func onViewTap() {
+        createGameView.hideKeyboard()
     }
 }
 

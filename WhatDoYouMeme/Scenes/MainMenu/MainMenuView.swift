@@ -24,11 +24,11 @@ final class MainMenuView: UIView {
         stack.spacing = Constants.buttonsStackSpacing
         return stack
     }()
-    private let searchGameButton = MemesButton(
+    private let searchGameButton: UIButton = MemesButton(
         title: LocalizedString.MainMenu.searchGame,
         style: .primary
     )
-    private let createGameButton = MemesButton(
+    private let createGameButton: UIButton = MemesButton(
         title: LocalizedString.MainMenu.createGame,
         style: .default
     )

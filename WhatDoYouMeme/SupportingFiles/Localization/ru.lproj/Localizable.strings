@@ -19,3 +19,6 @@ createGame.closeAlertTitle = "Вы уверены?";
 createGame.closeAlertMessage = "Весь прогресс будет потерян.";
 createGame.closeAlertOkAction = "Да";
 createGame.closeAlertCancelAction = "Нет";
+
+createGame.nameTextfieldPlaceholder = "Введите название";
+createGame.createButtonTitle = "Создать";

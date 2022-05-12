@@ -50,13 +50,12 @@ final class MemesButton: UIButton {
 
     override func updateConstraints() {
         super.updateConstraints()
-        NSLayoutConstraint.activate([
-            heightAnchor.constraint(equalToConstant: Constants.buttonHeight)
-        ])
+        updateButtonConstraints()
     }
 }
 
 
+// MARK: - Private
 private extension MemesButton {
     func setupButton() {
         setNeedsUpdateConstraints()
@@ -94,5 +93,15 @@ private extension MemesButton {
                     self.alpha = Constants.defaultAlpha
                 }
         }
+    }
+}
+
+
+// MARK: - Constraints
+private extension MemesButton {
+    func updateButtonConstraints() {
+        NSLayoutConstraint.activate([
+            heightAnchor.constraint(equalToConstant: Constants.buttonHeight)
+        ])
     }
 }
