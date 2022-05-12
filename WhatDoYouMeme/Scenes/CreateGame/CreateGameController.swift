@@ -9,7 +9,22 @@ import UIKit
 
 final class CreateGameController: UIViewController {
     private var createGameView: CreateGameView!
+    private let interactor: CreateGameInteractor
+    private let coordinator: CreateGameCoordinator
 
+
+    private var newLobbieName: String = .empty
+
+
+    init(interactor: CreateGameInteractor, coordinator: CreateGameCoordinator) {
+        self.interactor = interactor
+        self.coordinator = coordinator
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func loadView() {
         super.loadView()
@@ -25,17 +40,43 @@ final class CreateGameController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        createGameView.enableLayoutAnimation(false)
         createGameView.activateNameTextfield()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        createGameView.enableLayoutAnimation(true)
+    }
+
     override func onCloseTap() {
-        closeAlert()
+        newLobbieName.isEmpty ? super.onCloseTap() : closeAlert()
+    }
+
+
+    func updateLobbieName(_ newName: String) {
+        newLobbieName = newName
+        createGameView.enableCreateButton(!newName.isEmpty)
     }
 
 
     @objc
     func onViewTap() {
         createGameView.hideKeyboard()
+    }
+
+    @objc
+    func onCreateButtonTap() {
+        createGameView.hideKeyboard()
+        createGameView.setLoading(true)
+        interactor.createLobbie(withName: newLobbieName) { [weak self] lobbie in
+            guard let strongSelf = self else { return }
+            guard let lobbie = lobbie else {
+                strongSelf.showErrorAlert()
+                return
+            }
+            strongSelf.coordinator.showLobbieInfoVC(lobbie: lobbie, fromVC: strongSelf)
+        }
     }
 }
 

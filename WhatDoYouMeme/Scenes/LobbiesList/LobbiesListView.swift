@@ -17,7 +17,7 @@ final class LobbiesListView: UIView {
         $0.tableFooterView = UIView()
         $0.separatorStyle = .none
         $0.backgroundColor = .background
-        $0.contentInset = UIEdgeInsets(top: AutoLayout.Constants.baseTopInset, left: .zero, bottom: .zero, right: .zero)
+        $0.contentInset = UIEdgeInsets(top: GlobalConstants.AutoLayout.baseTopInset, left: .zero, bottom: .zero, right: .zero)
         return $0
     }(UITableView())
 
@@ -41,6 +41,10 @@ final class LobbiesListView: UIView {
     func reloadData() {
         tableView.reloadData()
     }
+
+    func deselectAllRows() {
+        tableView.deselectAllRows()
+    }
 }
 
 
@@ -51,7 +55,7 @@ private extension LobbiesListView {
         setNeedsUpdateConstraints()
 
         addSubview(tableView)
-        tableView.delegate = self
+        tableView.delegate = controller
         tableView.dataSource = self
     }
 }

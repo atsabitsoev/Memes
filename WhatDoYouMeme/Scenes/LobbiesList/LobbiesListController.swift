@@ -10,13 +10,15 @@ import UIKit
 final class LobbiesListController: UIViewController {
     private var lobbiesListView: LobbiesListView!
     private let interactor: LobbiesListInteractor
+    private let coordinator: LobbiesListCoordinator
 
 
     private(set) var lobbies: [Lobbie] = []
 
 
-    init(interactor: LobbiesListInteractor) {
+    init(interactor: LobbiesListInteractor, coordinator: LobbiesListCoordinator) {
         self.interactor = interactor
+        self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -33,8 +35,23 @@ final class LobbiesListController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.backButtonTitle = .empty
         addCloseButton()
         loadLobbies()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        lobbiesListView.deselectAllRows()
+    }
+}
+
+
+// MARK: - UITableViewDelegate
+extension LobbiesListController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedLobbie = lobbies[indexPath.row]
+        coordinator.showLobbieInfoVC(lobbie: selectedLobbie, fromVC: self)
     }
 }
 

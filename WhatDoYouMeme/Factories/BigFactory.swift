@@ -9,7 +9,8 @@ import UIKit
 
 final class BigFactory {
     func makeMainMenuVC(withNavigator: Bool = false) -> UIViewController {
-        let mainMenuVC = MainMenuController()
+        let coordinator = MainMenuCoordinator()
+        let mainMenuVC = MainMenuController(coordinator: coordinator)
         return withNavigator ? mainMenuVC.navigated(by: makeNavigator()) : mainMenuVC
     }
 
@@ -20,12 +21,21 @@ final class BigFactory {
 
     func makeLobbiesListVC(withNavigator: Bool = false) -> UIViewController {
         let interactor = LobbiesListInteractor()
-        let lobbiesListVC = LobbiesListController(interactor: interactor)
+        let coordinator = LobbiesListCoordinator()
+        let lobbiesListVC = LobbiesListController(interactor: interactor, coordinator: coordinator)
         return withNavigator ? lobbiesListVC.navigated(by: makeNavigator()) : lobbiesListVC
     }
 
+    func makeLobbieInfoVC(lobbie: Lobbie, withNavigator: Bool = false) -> UIViewController {
+        let interactor = LobbieInfoInteractor()
+        let lobbieInfoVC = LobbieInfoController(interactor: interactor, lobbie: lobbie)
+        return withNavigator ? lobbieInfoVC.navigated(by: makeNavigator()) : lobbieInfoVC
+    }
+
     func makeCreateGameVC(withNavigator: Bool = false) -> UIViewController {
-        let createGameVC = CreateGameController()
+        let interactor = CreateGameInteractor()
+        let coordinator = CreateGameCoordinator()
+        let createGameVC = CreateGameController(interactor: interactor, coordinator: coordinator)
         return withNavigator ? createGameVC.navigated(by: makeNavigator()) : createGameVC
     }
 }

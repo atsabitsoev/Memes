@@ -71,8 +71,8 @@ private extension MainMenuView {
     func updateButtonsStackConstraints() {
         NSLayoutConstraint.activate([
             buttonsStack.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: Constants.buttonsStackCenterYOffset),
-            buttonsStack.leftAnchor.constraint(equalTo: leftAnchor, constant: AutoLayout.Constants.baseHorizontalInset),
-            buttonsStack.rightAnchor.constraint(equalTo: rightAnchor, constant: -AutoLayout.Constants.baseHorizontalInset)
+            buttonsStack.leftAnchor.constraint(equalTo: leftAnchor, constant: GlobalConstants.AutoLayout.baseHorizontalInset),
+            buttonsStack.rightAnchor.constraint(equalTo: rightAnchor, constant: -GlobalConstants.AutoLayout.baseHorizontalInset)
         ])
     }
 }

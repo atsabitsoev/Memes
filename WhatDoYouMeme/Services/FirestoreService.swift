@@ -55,9 +55,30 @@ final class FirestoreService {
             }
         }
     }
+
+    func createLobbie(withName name: String, _ handler: @escaping (Lobbie?) -> Void) {
+        guard let userId = UserService.shared.getUserId() else { return }
+        let currentPlayerRef = db.collection(CollectionsKeys.players.rawValue).document(userId)
+        let members = [currentPlayerRef]
+        let data: [String: Any] = [
+            "name": name,
+            "members": members
+        ]
+        let newDocumentRef = db.collection(CollectionsKeys.lobbies.rawValue).document()
+        newDocumentRef.setData(data) { error in
+            guard error == nil else {
+                handler(nil)
+                return
+            }
+            let membersPaths = members.map(\.path)
+            let createdLobbie = Lobbie(id: newDocumentRef.documentID, name: name, membersPaths: membersPaths)
+            handler(createdLobbie)
+        }
+    }
 }
 
 
 fileprivate enum CollectionsKeys: String {
     case lobbies
+    case players
 }

@@ -9,9 +9,18 @@ import UIKit
 
 final class MainMenuController: UIViewController {
     private var mainMenuView: MainMenuView!
-    private let coordinator = MainMenuCoordinator()
+    private let coordinator: MainMenuCoordinator
 
 
+    init(coordinator: MainMenuCoordinator) {
+        self.coordinator = coordinator
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func loadView() {
         super.loadView()
         mainMenuView = MainMenuView(controller: self)

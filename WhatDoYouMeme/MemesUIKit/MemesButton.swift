@@ -19,6 +19,7 @@ final class MemesButton: UIButton {
         static let buttonHeight: CGFloat = 50
 
         static let highlightedAlpha: CGFloat = 0.3
+        static let disabledAlpha: CGFloat = 0.3
         static let defaultAlpha: CGFloat = 1
         static let highlightDuration: TimeInterval = 0.3
     }
@@ -27,6 +28,12 @@ final class MemesButton: UIButton {
     override var isHighlighted: Bool {
         willSet {
             onHighlightedChange(newValue)
+        }
+    }
+
+    override var isEnabled: Bool {
+        willSet {
+            onEnabledChange(newValue)
         }
     }
 
@@ -93,6 +100,11 @@ private extension MemesButton {
                     self.alpha = Constants.defaultAlpha
                 }
         }
+    }
+
+    func onEnabledChange(_ isEnabled: Bool) {
+        isUserInteractionEnabled = isEnabled
+        alpha = isEnabled ? Constants.defaultAlpha : Constants.disabledAlpha
     }
 }
 

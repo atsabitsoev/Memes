@@ -19,6 +19,11 @@ enum LocalizedString {
     enum LobbiesList {
         static var title: String { "lobbiesList.title".localized() }
     }
+    enum LobbieInfo {
+        static var closeAlertMessage: String { "lobbieInfo.closeAlertMessage".localized() }
+        static var closeAlertOkAction: String { "lobbieInfo.closeAlertOkAction".localized() }
+        static var closeAlertCancelAction: String { "lobbieInfo.closeAlertCancelAction".localized() }
+    }
     enum CreateGame {
         static var title: String { "createGame.title".localized() }
 
@@ -29,6 +34,11 @@ enum LocalizedString {
 
         static var nameTextfieldPlaceholder: String { "createGame.nameTextfieldPlaceholder".localized() }
         static var createButtonTitle: String { "createGame.createButtonTitle".localized() }
+    }
+    enum ErrorAlertDefault {
+        static var title: String { "errorAlertDefault.title".localized() }
+        static var message: String { "errorAlertDefault.message".localized() }
+        static var okAction: String { "errorAlertDefault.okAction".localized() }
     }
 }
 

@@ -14,6 +14,10 @@ settings.title = "Настройки";
 
 lobbiesList.title = "Поиск игры";
 
+lobbieInfo.closeAlertMessage = "Вы уверены, что хотите покинуть лобби?";
+lobbieInfo.closeAlertOkAction = "Да";
+lobbieInfo.closeAlertCancelAction = "Нет";
+
 createGame.title = "Создать игру";
 createGame.closeAlertTitle = "Вы уверены?";
 createGame.closeAlertMessage = "Весь прогресс будет потерян.";
@@ -22,3 +26,7 @@ createGame.closeAlertCancelAction = "Нет";
 
 createGame.nameTextfieldPlaceholder = "Введите название";
 createGame.createButtonTitle = "Создать";
+
+errorAlertDefault.title = "Ошибка";
+errorAlertDefault.message = "Что-то пошло не так...";
+errorAlertDefault.okAction = "Ок";

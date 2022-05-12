@@ -13,9 +13,9 @@ final class MemesTextfield: UITextField {
         static let textFieldHeight: CGFloat = 50
         static let textRectInsets: UIEdgeInsets = .init(
             top: .zero,
-            left: AutoLayout.Constants.baseHorizontalInset,
+            left: GlobalConstants.AutoLayout.baseHorizontalInset,
             bottom: .zero,
-            right: AutoLayout.Constants.baseHorizontalInset
+            right: GlobalConstants.AutoLayout.baseHorizontalInset
         )
     }
 
@@ -51,6 +51,8 @@ private extension MemesTextfield {
         backgroundColor = .textfieldBackground
         setNeedsUpdateConstraints()
         layer.cornerRadius = Constants.cornerRadius
+        autocapitalizationType = .sentences
+        autocorrectionType = .no
     }
 }
 

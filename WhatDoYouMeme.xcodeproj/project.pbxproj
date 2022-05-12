@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2D4CA7BC282D6A8D0047B959 /* KeyboardNotificationsObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4CA7BB282D6A8D0047B959 /* KeyboardNotificationsObserver.swift */; };
 		2D800E64282D4D4800D6FA37 /* MemesTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D800E63282D4D4800D6FA37 /* MemesTextfield.swift */; };
 		2D9E3789282BBF6300CC54C5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9E3788282BBF6300CC54C5 /* AppDelegate.swift */; };
 		2D9E378B282BBF6300CC54C5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9E378A282BBF6300CC54C5 /* SceneDelegate.swift */; };
@@ -21,7 +22,7 @@
 		2D9E37B4282BC69700CC54C5 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9E37B3282BC69700CC54C5 /* String+Extension.swift */; };
 		2D9E37B6282BC9C700CC54C5 /* UIBarButton+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9E37B5282BC9C700CC54C5 /* UIBarButton+Extension.swift */; };
 		2D9E37B9282BCC5000CC54C5 /* MemesButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9E37B8282BCC5000CC54C5 /* MemesButton.swift */; };
-		2D9E37BC282BCF5200CC54C5 /* AutoLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9E37BB282BCF5200CC54C5 /* AutoLayout.swift */; };
+		2D9E37BC282BCF5200CC54C5 /* GlobalConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9E37BB282BCF5200CC54C5 /* GlobalConstants.swift */; };
 		2D9E37BF282BD00100CC54C5 /* UIStackView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9E37BE282BD00100CC54C5 /* UIStackView+Extension.swift */; };
 		2D9E37C3282C029A00CC54C5 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9E37C2282C029A00CC54C5 /* SettingsController.swift */; };
 		2D9E37C5282C031800CC54C5 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9E37C4282C031800CC54C5 /* SettingsView.swift */; };
@@ -42,9 +43,18 @@
 		2DA91A22282C399B0081686A /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DA91A21282C399B0081686A /* Player.swift */; };
 		2DA91A24282C48710081686A /* LobbiesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DA91A23282C48710081686A /* LobbiesListCell.swift */; };
 		2DA91A26282C49D40081686A /* LobbiesListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DA91A25282C49D40081686A /* LobbiesListInteractor.swift */; };
+		2DB7ED1E282D849500D015F7 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB7ED1D282D849500D015F7 /* UserService.swift */; };
+		2DB7ED20282D862D00D015F7 /* CreateGameInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB7ED1F282D862D00D015F7 /* CreateGameInteractor.swift */; };
+		2DB7ED22282D8A1900D015F7 /* LobbieInfoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB7ED21282D8A1900D015F7 /* LobbieInfoController.swift */; };
+		2DB7ED25282D8B1C00D015F7 /* LobbieInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB7ED24282D8B1C00D015F7 /* LobbieInfoView.swift */; };
+		2DB7ED27282D8BBF00D015F7 /* LobbieInfoInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB7ED26282D8BBF00D015F7 /* LobbieInfoInteractor.swift */; };
+		2DB7ED29282D8CB800D015F7 /* CreateGameCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB7ED28282D8CB800D015F7 /* CreateGameCoordinator.swift */; };
+		2DB7ED2B282D984100D015F7 /* LobbiesListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB7ED2A282D984100D015F7 /* LobbiesListCoordinator.swift */; };
+		2DB7ED2D282D995400D015F7 /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB7ED2C282D995400D015F7 /* UITableView+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2D4CA7BB282D6A8D0047B959 /* KeyboardNotificationsObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardNotificationsObserver.swift; sourceTree = "<group>"; };
 		2D800E63282D4D4800D6FA37 /* MemesTextfield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemesTextfield.swift; sourceTree = "<group>"; };
 		2D9E3785282BBF6300CC54C5 /* WhatDoYouMeme.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhatDoYouMeme.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D9E3788282BBF6300CC54C5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -63,7 +73,7 @@
 		2D9E37B3282BC69700CC54C5 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		2D9E37B5282BC9C700CC54C5 /* UIBarButton+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBarButton+Extension.swift"; sourceTree = "<group>"; };
 		2D9E37B8282BCC5000CC54C5 /* MemesButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemesButton.swift; sourceTree = "<group>"; };
-		2D9E37BB282BCF5200CC54C5 /* AutoLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoLayout.swift; sourceTree = "<group>"; };
+		2D9E37BB282BCF5200CC54C5 /* GlobalConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalConstants.swift; sourceTree = "<group>"; };
 		2D9E37BE282BD00100CC54C5 /* UIStackView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Extension.swift"; sourceTree = "<group>"; };
 		2D9E37C2282C029A00CC54C5 /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		2D9E37C4282C031800CC54C5 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -79,6 +89,14 @@
 		2DA91A21282C399B0081686A /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		2DA91A23282C48710081686A /* LobbiesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbiesListCell.swift; sourceTree = "<group>"; };
 		2DA91A25282C49D40081686A /* LobbiesListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbiesListInteractor.swift; sourceTree = "<group>"; };
+		2DB7ED1D282D849500D015F7 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
+		2DB7ED1F282D862D00D015F7 /* CreateGameInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGameInteractor.swift; sourceTree = "<group>"; };
+		2DB7ED21282D8A1900D015F7 /* LobbieInfoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbieInfoController.swift; sourceTree = "<group>"; };
+		2DB7ED24282D8B1C00D015F7 /* LobbieInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbieInfoView.swift; sourceTree = "<group>"; };
+		2DB7ED26282D8BBF00D015F7 /* LobbieInfoInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbieInfoInteractor.swift; sourceTree = "<group>"; };
+		2DB7ED28282D8CB800D015F7 /* CreateGameCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGameCoordinator.swift; sourceTree = "<group>"; };
+		2DB7ED2A282D984100D015F7 /* LobbiesListCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbiesListCoordinator.swift; sourceTree = "<group>"; };
+		2DB7ED2C282D995400D015F7 /* UITableView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,7 +140,7 @@
 				2D9E37B7282BCC1100CC54C5 /* MemesUIKit */,
 				2D9E37A2282BC12A00CC54C5 /* UI+Extension */,
 				2D9E37B2282BC68100CC54C5 /* Primitives+Extension */,
-				2D9E37BA282BCF4200CC54C5 /* AutoLayout */,
+				2D9E37BA282BCF4200CC54C5 /* Constants */,
 				2D9E37BD282BCF6200CC54C5 /* Factories */,
 				2D9E37C0282BD0B500CC54C5 /* Scenes */,
 				2D9E379C282BBF9200CC54C5 /* SupportingFiles */,
@@ -159,7 +177,9 @@
 				2D9E37A3282BC13A00CC54C5 /* UIColor+Extension.swift */,
 				2D9E37B5282BC9C700CC54C5 /* UIBarButton+Extension.swift */,
 				2D9E37BE282BD00100CC54C5 /* UIStackView+Extension.swift */,
-				2D9E37D7282C10EA00CC54C5 /* UIViewController */,
+				2D9E37CB282C050E00CC54C5 /* UIViewController+Extension.swift */,
+				2D4CA7BB282D6A8D0047B959 /* KeyboardNotificationsObserver.swift */,
+				2DB7ED2C282D995400D015F7 /* UITableView+Extension.swift */,
 			);
 			path = "UI+Extension";
 			sourceTree = "<group>";
@@ -190,12 +210,12 @@
 			path = MemesUIKit;
 			sourceTree = "<group>";
 		};
-		2D9E37BA282BCF4200CC54C5 /* AutoLayout */ = {
+		2D9E37BA282BCF4200CC54C5 /* Constants */ = {
 			isa = PBXGroup;
 			children = (
-				2D9E37BB282BCF5200CC54C5 /* AutoLayout.swift */,
+				2D9E37BB282BCF5200CC54C5 /* GlobalConstants.swift */,
 			);
-			path = AutoLayout;
+			path = Constants;
 			sourceTree = "<group>";
 		};
 		2D9E37BD282BCF6200CC54C5 /* Factories */ = {
@@ -209,6 +229,7 @@
 		2D9E37C0282BD0B500CC54C5 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				2DB7ED23282D8A2500D015F7 /* LobbieInfo */,
 				2D9E37D2282C0E1200CC54C5 /* CreateGame */,
 				2D9E37CD282C098A00CC54C5 /* LobbiesList */,
 				2D9E37C1282C029100CC54C5 /* Settings */,
@@ -230,6 +251,7 @@
 			isa = PBXGroup;
 			children = (
 				2D9E37CE282C099C00CC54C5 /* LobbiesListController.swift */,
+				2DB7ED2A282D984100D015F7 /* LobbiesListCoordinator.swift */,
 				2DA91A25282C49D40081686A /* LobbiesListInteractor.swift */,
 				2D9E37D0282C0A3000CC54C5 /* LobbiesListView.swift */,
 				2DA91A23282C48710081686A /* LobbiesListCell.swift */,
@@ -241,22 +263,17 @@
 			isa = PBXGroup;
 			children = (
 				2D9E37D3282C0E2300CC54C5 /* CreateGameController.swift */,
+				2DB7ED1F282D862D00D015F7 /* CreateGameInteractor.swift */,
 				2D9E37D5282C0EA700CC54C5 /* CreateGameView.swift */,
+				2DB7ED28282D8CB800D015F7 /* CreateGameCoordinator.swift */,
 			);
 			path = CreateGame;
-			sourceTree = "<group>";
-		};
-		2D9E37D7282C10EA00CC54C5 /* UIViewController */ = {
-			isa = PBXGroup;
-			children = (
-				2D9E37CB282C050E00CC54C5 /* UIViewController+Extension.swift */,
-			);
-			path = UIViewController;
 			sourceTree = "<group>";
 		};
 		2DA91A1B282C36420081686A /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				2DB7ED1D282D849500D015F7 /* UserService.swift */,
 				2DA91A1C282C36550081686A /* FirestoreService.swift */,
 			);
 			path = Services;
@@ -269,6 +286,16 @@
 				2DA91A21282C399B0081686A /* Player.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		2DB7ED23282D8A2500D015F7 /* LobbieInfo */ = {
+			isa = PBXGroup;
+			children = (
+				2DB7ED21282D8A1900D015F7 /* LobbieInfoController.swift */,
+				2DB7ED24282D8B1C00D015F7 /* LobbieInfoView.swift */,
+				2DB7ED26282D8BBF00D015F7 /* LobbieInfoInteractor.swift */,
+			);
+			path = LobbieInfo;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -355,15 +382,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				2DA91A26282C49D40081686A /* LobbiesListInteractor.swift in Sources */,
+				2DB7ED25282D8B1C00D015F7 /* LobbieInfoView.swift in Sources */,
+				2DB7ED2D282D995400D015F7 /* UITableView+Extension.swift in Sources */,
 				2D9E37CC282C050E00CC54C5 /* UIViewController+Extension.swift in Sources */,
+				2DB7ED22282D8A1900D015F7 /* LobbieInfoController.swift in Sources */,
 				2D9E37B4282BC69700CC54C5 /* String+Extension.swift in Sources */,
 				2D9E37C3282C029A00CC54C5 /* SettingsController.swift in Sources */,
 				2D9E37B6282BC9C700CC54C5 /* UIBarButton+Extension.swift in Sources */,
 				2D800E64282D4D4800D6FA37 /* MemesTextfield.swift in Sources */,
 				2DA91A24282C48710081686A /* LobbiesListCell.swift in Sources */,
+				2DB7ED27282D8BBF00D015F7 /* LobbieInfoInteractor.swift in Sources */,
+				2DB7ED29282D8CB800D015F7 /* CreateGameCoordinator.swift in Sources */,
 				2DA91A22282C399B0081686A /* Player.swift in Sources */,
+				2DB7ED20282D862D00D015F7 /* CreateGameInteractor.swift in Sources */,
 				2D9E3789282BBF6300CC54C5 /* AppDelegate.swift in Sources */,
 				2D9E37B9282BCC5000CC54C5 /* MemesButton.swift in Sources */,
+				2D4CA7BC282D6A8D0047B959 /* KeyboardNotificationsObserver.swift in Sources */,
 				2D9E37B1282BC59E00CC54C5 /* LocalizedString.swift in Sources */,
 				2DA91A1D282C36550081686A /* FirestoreService.swift in Sources */,
 				2D9E37CF282C099C00CC54C5 /* LobbiesListController.swift in Sources */,
@@ -373,11 +407,13 @@
 				2DA91A20282C39210081686A /* Lobbie.swift in Sources */,
 				2D9E37C5282C031800CC54C5 /* SettingsView.swift in Sources */,
 				2D9E37D4282C0E2300CC54C5 /* CreateGameController.swift in Sources */,
+				2DB7ED1E282D849500D015F7 /* UserService.swift in Sources */,
 				2D9E37A6282BC19A00CC54C5 /* BigFactory.swift in Sources */,
 				2D9E378B282BBF6300CC54C5 /* SceneDelegate.swift in Sources */,
-				2D9E37BC282BCF5200CC54C5 /* AutoLayout.swift in Sources */,
+				2D9E37BC282BCF5200CC54C5 /* GlobalConstants.swift in Sources */,
 				2D9E37A1282BC02700CC54C5 /* MainMenuView.swift in Sources */,
 				2D9E379F282BC02000CC54C5 /* MainMenuController.swift in Sources */,
+				2DB7ED2B282D984100D015F7 /* LobbiesListCoordinator.swift in Sources */,
 				2D9E37A4282BC13A00CC54C5 /* UIColor+Extension.swift in Sources */,
 				2D9E37D1282C0A3000CC54C5 /* LobbiesListView.swift in Sources */,
 			);

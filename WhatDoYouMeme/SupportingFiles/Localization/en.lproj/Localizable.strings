@@ -14,6 +14,10 @@ settings.title = "Settings";
 
 lobbiesList.title = "Lobbies";
 
+lobbieInfo.closeAlertMessage = "Are you sure you want to leave the lobby?";
+lobbieInfo.closeAlertOkAction = "Yes";
+lobbieInfo.closeAlertCancelAction = "No";
+
 createGame.title = "Create game";
 createGame.closeAlertTitle = "Are you sure?";
 createGame.closeAlertMessage = "All progress will be lost.";
@@ -22,3 +26,7 @@ createGame.closeAlertCancelAction = "No";
 
 createGame.nameTextfieldPlaceholder = "Enter title";
 createGame.createButtonTitle = "Create";
+
+errorAlertDefault.title = "Error";
+errorAlertDefault.message = "Something went wrong...";
+errorAlertDefault.okAction = "Ok";

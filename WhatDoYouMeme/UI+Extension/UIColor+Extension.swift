@@ -18,4 +18,5 @@ extension UIColor {
 
     static let lobbieListCardBackground: UIColor = UIColor.systemBackground
     static let lobbieListCardHighlighted: UIColor = UIColor.lightGray
+    static let disclosureIndicator: UIColor = UIColor.systemGray3
 }
