@@ -126,7 +126,7 @@ final class FirestoreService {
             }
             if readyMembers.contains(currentPlayerRef) {
                 readyMembers.removeAll(where: { $0 == currentPlayerRef })
-                snapshot.reference.setData([FieldsKeys.readyMembers.rawValue: members], mergeFields: [FieldsKeys.readyMembers.rawValue], completion: { _ in handler?() })
+                snapshot.reference.setData([FieldsKeys.readyMembers.rawValue: readyMembers], mergeFields: [FieldsKeys.readyMembers.rawValue], completion: { _ in handler?() })
             }
             if members.count == .zero {
                 snapshot.reference.delete(completion: { _ in handler?() })
@@ -150,7 +150,7 @@ final class FirestoreService {
             }
             if readyMembers.contains(currentPlayerRef) {
                 readyMembers.removeAll(where: { $0 == currentPlayerRef })
-                snapshot.reference.setData([FieldsKeys.readyMembers.rawValue: members], mergeFields: [FieldsKeys.readyMembers.rawValue], completion: { _ in handler() })
+                snapshot.reference.setData([FieldsKeys.readyMembers.rawValue: readyMembers], mergeFields: [FieldsKeys.readyMembers.rawValue], completion: { _ in handler() })
             }
             strongSelf.currentLobbieId = lobbieId
         }

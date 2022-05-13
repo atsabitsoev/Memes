@@ -13,6 +13,7 @@ final class LobbieInfoView: UIView {
 
     private let tableView: UITableView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.alwaysBounceVertical = false
         $0.tableFooterView = UIView()
         $0.register(LobbieInfoCell.self, forCellReuseIdentifier: LobbieInfoCell.identifier)
         $0.backgroundColor = .background
@@ -100,7 +101,7 @@ extension LobbieInfoView: UITableViewDataSource {
 
         cell.updateData(
             currentPlayer,
-            isReady: controller.readyPlayers.contains(where: { $0 == indexPath.row }),
+            isReady: controller.readyPlayers.contains(where: { $0 == currentPlayer.id }),
             state: state
         )
         return cell

@@ -10,6 +10,7 @@ import UIKit
 final class LobbieInfoController: UIViewController {
     private var lobbieInfoView: LobbieInfoView!
     private let interactor: LobbieInfoInteractor
+    private let coordinator: LobbieInfoCoordinator
 
 
     private let lobbieId: String
@@ -17,12 +18,13 @@ final class LobbieInfoController: UIViewController {
 
 
     var players: [Player] = []
-    var readyPlayers: [Int] = []
+    var readyPlayers: [String] = []
 
 
-    init(interactor: LobbieInfoInteractor, lobbieId: String) {
+    init(interactor: LobbieInfoInteractor, coordinator: LobbieInfoCoordinator, lobbieId: String) {
         self.interactor = interactor
         self.lobbieId = lobbieId
+        self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -42,6 +44,7 @@ final class LobbieInfoController: UIViewController {
         loadLobbie()
         enterInLobbie()
         NotificationCenter.default.addObserver(self, selector: #selector(onAppExit), name: UIApplication.willResignActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onAppEnterForeground), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
 
     override func onCloseTap() {
@@ -59,9 +62,12 @@ final class LobbieInfoController: UIViewController {
 
     @objc
     func onAppExit() {
-        quitFromLobbie { [weak self] in
-            self?.dismiss(animated: true)
-        }
+        quitFromLobbie()
+    }
+
+    @objc
+    func onAppEnterForeground() {
+        enterInLobbie()
     }
 }
 
@@ -78,6 +84,9 @@ private extension LobbieInfoController {
             }
             self?.lobbie = lobbie
             strongSelf.title = lobbie.name
+            if lobbie.membersPaths.count > 1 && Set(lobbie.readyMembersPaths) == Set(lobbie.membersPaths) {
+                strongSelf.coordinator.showGameVC(from: strongSelf)
+            }
 
             strongSelf.interactor.loadPlayers(withPaths: lobbie.membersPaths) { [weak self] players in
                 guard let strongSelf = self else {
@@ -85,7 +94,7 @@ private extension LobbieInfoController {
                     return
                 }
                 strongSelf.players = players
-                strongSelf.readyPlayers = lobbie.readyMembersPaths.compactMap({ lobbie.membersPaths.firstIndex(of: $0) })
+                strongSelf.readyPlayers = lobbie.readyMembersPaths.compactMap({ $0.components(separatedBy: "/").last })
                 if let userId = strongSelf.interactor.getUserId() {
                     let curerntUserIsReady = lobbie.readyMembersPaths.compactMap({ $0.components(separatedBy: "/").last }).contains(userId)
                     strongSelf.lobbieInfoView.setReadyButtonState(curerntUserIsReady)
@@ -103,10 +112,10 @@ private extension LobbieInfoController {
         }
     }
 
-    func quitFromLobbie(_ handler: @escaping () -> Void) {
+    func quitFromLobbie(_ handler: (() -> Void)? = nil) {
         lobbieInfoView.setLoading(true)
         interactor.quitFromLobbie { [weak self] in
-            handler()
+            handler?()
             self?.lobbieInfoView.setLoading(false)
         }
     }

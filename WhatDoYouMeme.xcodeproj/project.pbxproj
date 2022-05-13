@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		2D4CA7BC282D6A8D0047B959 /* KeyboardNotificationsObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4CA7BB282D6A8D0047B959 /* KeyboardNotificationsObserver.swift */; };
 		2D5B294E282E3105000E37FC /* LobbieInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5B294D282E3105000E37FC /* LobbieInfoCell.swift */; };
+		2D5B2950282EE7CC000E37FC /* GameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5B294F282EE7CC000E37FC /* GameController.swift */; };
+		2D5B2952282EE816000E37FC /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5B2951282EE816000E37FC /* GameView.swift */; };
+		2D5B2954282EE8F8000E37FC /* LobbieInfoCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5B2953282EE8F8000E37FC /* LobbieInfoCoordinator.swift */; };
 		2D800E64282D4D4800D6FA37 /* MemesTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D800E63282D4D4800D6FA37 /* MemesTextfield.swift */; };
 		2D9E3789282BBF6300CC54C5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9E3788282BBF6300CC54C5 /* AppDelegate.swift */; };
 		2D9E378B282BBF6300CC54C5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9E378A282BBF6300CC54C5 /* SceneDelegate.swift */; };
@@ -57,6 +60,9 @@
 /* Begin PBXFileReference section */
 		2D4CA7BB282D6A8D0047B959 /* KeyboardNotificationsObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardNotificationsObserver.swift; sourceTree = "<group>"; };
 		2D5B294D282E3105000E37FC /* LobbieInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbieInfoCell.swift; sourceTree = "<group>"; };
+		2D5B294F282EE7CC000E37FC /* GameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameController.swift; sourceTree = "<group>"; };
+		2D5B2951282EE816000E37FC /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
+		2D5B2953282EE8F8000E37FC /* LobbieInfoCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbieInfoCoordinator.swift; sourceTree = "<group>"; };
 		2D800E63282D4D4800D6FA37 /* MemesTextfield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemesTextfield.swift; sourceTree = "<group>"; };
 		2D9E3785282BBF6300CC54C5 /* WhatDoYouMeme.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhatDoYouMeme.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D9E3788282BBF6300CC54C5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -117,6 +123,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2D5B2956282EE96D000E37FC /* Game */ = {
+			isa = PBXGroup;
+			children = (
+				2D5B294F282EE7CC000E37FC /* GameController.swift */,
+				2D5B2951282EE816000E37FC /* GameView.swift */,
+			);
+			path = Game;
+			sourceTree = "<group>";
+		};
 		2D9E377C282BBF6300CC54C5 = {
 			isa = PBXGroup;
 			children = (
@@ -231,6 +246,7 @@
 		2D9E37C0282BD0B500CC54C5 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				2D5B2956282EE96D000E37FC /* Game */,
 				2DB7ED23282D8A2500D015F7 /* LobbieInfo */,
 				2D9E37D2282C0E1200CC54C5 /* CreateGame */,
 				2D9E37CD282C098A00CC54C5 /* LobbiesList */,
@@ -294,6 +310,7 @@
 			isa = PBXGroup;
 			children = (
 				2DB7ED21282D8A1900D015F7 /* LobbieInfoController.swift */,
+				2D5B2953282EE8F8000E37FC /* LobbieInfoCoordinator.swift */,
 				2DB7ED24282D8B1C00D015F7 /* LobbieInfoView.swift */,
 				2DB7ED26282D8BBF00D015F7 /* LobbieInfoInteractor.swift */,
 				2D5B294D282E3105000E37FC /* LobbieInfoCell.swift */,
@@ -411,13 +428,16 @@
 				2DA91A20282C39210081686A /* Lobbie.swift in Sources */,
 				2D9E37C5282C031800CC54C5 /* SettingsView.swift in Sources */,
 				2D9E37D4282C0E2300CC54C5 /* CreateGameController.swift in Sources */,
+				2D5B2950282EE7CC000E37FC /* GameController.swift in Sources */,
 				2DB7ED1E282D849500D015F7 /* UserService.swift in Sources */,
 				2D9E37A6282BC19A00CC54C5 /* BigFactory.swift in Sources */,
 				2D9E378B282BBF6300CC54C5 /* SceneDelegate.swift in Sources */,
 				2D9E37BC282BCF5200CC54C5 /* GlobalConstants.swift in Sources */,
+				2D5B2952282EE816000E37FC /* GameView.swift in Sources */,
 				2D9E37A1282BC02700CC54C5 /* MainMenuView.swift in Sources */,
 				2D9E379F282BC02000CC54C5 /* MainMenuController.swift in Sources */,
 				2DB7ED2B282D984100D015F7 /* LobbiesListCoordinator.swift in Sources */,
+				2D5B2954282EE8F8000E37FC /* LobbieInfoCoordinator.swift in Sources */,
 				2D9E37A4282BC13A00CC54C5 /* UIColor+Extension.swift in Sources */,
 				2D9E37D1282C0A3000CC54C5 /* LobbiesListView.swift in Sources */,
 			);

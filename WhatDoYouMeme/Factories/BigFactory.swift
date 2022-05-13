@@ -28,7 +28,8 @@ final class BigFactory {
 
     func makeLobbieInfoVC(lobbieId: String, withNavigator: Bool = false) -> UIViewController {
         let interactor = LobbieInfoInteractor()
-        let lobbieInfoVC = LobbieInfoController(interactor: interactor, lobbieId: lobbieId)
+        let coordinator = LobbieInfoCoordinator()
+        let lobbieInfoVC = LobbieInfoController(interactor: interactor, coordinator: coordinator, lobbieId: lobbieId)
         return withNavigator ? lobbieInfoVC.navigated(by: makeNavigator()) : lobbieInfoVC
     }
 
@@ -37,6 +38,11 @@ final class BigFactory {
         let coordinator = CreateGameCoordinator()
         let createGameVC = CreateGameController(interactor: interactor, coordinator: coordinator)
         return withNavigator ? createGameVC.navigated(by: makeNavigator()) : createGameVC
+    }
+
+    func makeGameVC(withNavigator: Bool = false) -> UIViewController {
+        let gameVC = GameController()
+        return withNavigator ? gameVC.navigated(by: makeNavigator()) : gameVC
     }
 }
 
