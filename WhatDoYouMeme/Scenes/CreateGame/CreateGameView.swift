@@ -158,7 +158,7 @@ private extension CreateGameView {
     func updateScrollViewConstraints() {
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: topAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: createButton.topAnchor, constant: -GlobalConstants.AutoLayout.baseBottomInset),
             scrollView.leftAnchor.constraint(equalTo: leftAnchor),
             scrollView.rightAnchor.constraint(equalTo: rightAnchor)
         ])

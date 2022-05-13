@@ -75,7 +75,7 @@ final class CreateGameController: UIViewController {
                 strongSelf.showErrorAlert()
                 return
             }
-            strongSelf.coordinator.showLobbieInfoVC(lobbie: lobbie, fromVC: strongSelf)
+            strongSelf.coordinator.showLobbieInfoVC(lobbieId: lobbie.id, fromVC: strongSelf)
         }
     }
 }

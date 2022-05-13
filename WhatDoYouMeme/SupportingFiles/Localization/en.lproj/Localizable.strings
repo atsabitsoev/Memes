@@ -17,6 +17,8 @@ lobbiesList.title = "Lobbies";
 lobbieInfo.closeAlertMessage = "Are you sure you want to leave the lobby?";
 lobbieInfo.closeAlertOkAction = "Yes";
 lobbieInfo.closeAlertCancelAction = "No";
+lobbieInfo.ready = "ready";
+lobbieInfo.notReady = "not ready";
 
 createGame.title = "Create game";
 createGame.closeAlertTitle = "Are you sure?";

@@ -11,8 +11,8 @@ final class LobbiesListCoordinator {
     private let factory = BigFactory()
 
 
-    func showLobbieInfoVC(lobbie: Lobbie, fromVC: UIViewController) {
-        let lobbieInfoVC = factory.makeLobbieInfoVC(lobbie: lobbie)
-        fromVC.open(vc: lobbieInfoVC, inStack: true)
+    func showLobbieInfoVC(lobbieId: String, fromVC: UIViewController) {
+        let lobbieInfoVC = factory.makeLobbieInfoVC(lobbieId: lobbieId)
+        fromVC.open(vc: lobbieInfoVC, inStack: true, canGoBack: false)
     }
 }

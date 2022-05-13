@@ -65,7 +65,7 @@ private extension LobbiesListView {
 private extension LobbiesListView {
     func updateTableViewConstraints() {
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            tableView.topAnchor.constraint(equalTo: topAnchor),
             tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
             tableView.leftAnchor.constraint(equalTo: leftAnchor),
             tableView.rightAnchor.constraint(equalTo: rightAnchor)
@@ -74,7 +74,7 @@ private extension LobbiesListView {
 }
 
 
-// MARK: - Table View
+// MARK: - UITableView Datasource
 extension LobbiesListView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let currentLobbie = controller.lobbies[indexPath.row]

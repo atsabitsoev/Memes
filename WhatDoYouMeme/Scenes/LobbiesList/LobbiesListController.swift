@@ -51,7 +51,7 @@ final class LobbiesListController: UIViewController {
 extension LobbiesListController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedLobbie = lobbies[indexPath.row]
-        coordinator.showLobbieInfoVC(lobbie: selectedLobbie, fromVC: self)
+        coordinator.showLobbieInfoVC(lobbieId: selectedLobbie.id, fromVC: self)
     }
 }
 

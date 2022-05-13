@@ -11,4 +11,5 @@ struct Lobbie {
     let id: String
     let name: String
     let membersPaths: [String]
+    let readyMembersPaths: [String]
 }

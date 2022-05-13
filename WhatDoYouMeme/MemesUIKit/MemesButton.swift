@@ -38,7 +38,7 @@ final class MemesButton: UIButton {
     }
 
 
-    private let style: Style
+    private var style: Style
 
 
     init(
@@ -58,6 +58,11 @@ final class MemesButton: UIButton {
     override func updateConstraints() {
         super.updateConstraints()
         updateButtonConstraints()
+    }
+
+    func updateStyle(_ style: Style) {
+        self.style = style
+        setupStyle()
     }
 }
 
@@ -81,6 +86,7 @@ private extension MemesButton {
 
     func setupPrimaryStyle() {
         backgroundColor = .primaryButton
+        setTitleColor(.primaryButtonTitle, for: .normal)
     }
 
     func setupDefaultStyle() {

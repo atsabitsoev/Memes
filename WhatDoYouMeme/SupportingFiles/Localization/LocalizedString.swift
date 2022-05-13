@@ -23,6 +23,8 @@ enum LocalizedString {
         static var closeAlertMessage: String { "lobbieInfo.closeAlertMessage".localized() }
         static var closeAlertOkAction: String { "lobbieInfo.closeAlertOkAction".localized() }
         static var closeAlertCancelAction: String { "lobbieInfo.closeAlertCancelAction".localized() }
+        static var ready: String { "lobbieInfo.ready".localized() }
+        static var notReady: String { "lobbieInfo.notReady".localized() }
     }
     enum CreateGame {
         static var title: String { "createGame.title".localized() }

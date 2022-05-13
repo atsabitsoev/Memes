@@ -12,12 +12,17 @@ final class LobbieInfoController: UIViewController {
     private let interactor: LobbieInfoInteractor
 
 
-    private let lobbie: Lobbie
+    private let lobbieId: String
+    private var lobbie: Lobbie?
 
 
-    init(interactor: LobbieInfoInteractor, lobbie: Lobbie) {
+    var players: [Player] = []
+    var readyPlayers: [Int] = []
+
+
+    init(interactor: LobbieInfoInteractor, lobbieId: String) {
         self.interactor = interactor
-        self.lobbie = lobbie
+        self.lobbieId = lobbieId
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -29,22 +34,83 @@ final class LobbieInfoController: UIViewController {
         super.loadView()
         lobbieInfoView = LobbieInfoView(controller: self)
         view = lobbieInfoView
-        title = lobbie.name
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         addCloseButton()
+        loadLobbie()
+        enterInLobbie()
+        NotificationCenter.default.addObserver(self, selector: #selector(onAppExit), name: UIApplication.willResignActiveNotification, object: nil)
     }
 
     override func onCloseTap() {
         closeAlert()
+    }
+
+    
+    @objc
+    func onReadyButtonTap() {
+        lobbieInfoView.setLoading(true)
+        interactor.toggleReady(lobbieId: lobbieId) { [weak self] in
+            self?.lobbieInfoView.setLoading(false)
+        }
+    }
+
+    @objc
+    func onAppExit() {
+        quitFromLobbie { [weak self] in
+            self?.dismiss(animated: true)
+        }
     }
 }
 
 
 // MARK: - Private
 private extension LobbieInfoController {
+
+    func loadLobbie() {
+        lobbieInfoView.setLoading(true)
+        interactor.loadLobbie(byId: lobbieId) { [weak self] lobbie in
+            guard let strongSelf = self, let lobbie = lobbie else {
+                self?.lobbieInfoView.setLoading(false)
+                return
+            }
+            self?.lobbie = lobbie
+            strongSelf.title = lobbie.name
+
+            strongSelf.interactor.loadPlayers(withPaths: lobbie.membersPaths) { [weak self] players in
+                guard let strongSelf = self else {
+                    strongSelf.lobbieInfoView.setLoading(false)
+                    return
+                }
+                strongSelf.players = players
+                strongSelf.readyPlayers = lobbie.readyMembersPaths.compactMap({ lobbie.membersPaths.firstIndex(of: $0) })
+                if let userId = strongSelf.interactor.getUserId() {
+                    let curerntUserIsReady = lobbie.readyMembersPaths.compactMap({ $0.components(separatedBy: "/").last }).contains(userId)
+                    strongSelf.lobbieInfoView.setReadyButtonState(curerntUserIsReady)
+                }
+                strongSelf.lobbieInfoView.reloadData()
+                strongSelf.lobbieInfoView.setLoading(false)
+            }
+        }
+    }
+
+    func enterInLobbie() {
+        lobbieInfoView.setLoading(true)
+        interactor.enterInLobbie(lobbieId: lobbieId) { [weak self] in
+            self?.lobbieInfoView.setLoading(false)
+        }
+    }
+
+    func quitFromLobbie(_ handler: @escaping () -> Void) {
+        lobbieInfoView.setLoading(true)
+        interactor.quitFromLobbie { [weak self] in
+            handler()
+            self?.lobbieInfoView.setLoading(false)
+        }
+    }
+
     func closeAlert() {
         let alert = UIAlertController(
             title: nil,
@@ -53,7 +119,11 @@ private extension LobbieInfoController {
         )
         let okAction = UIAlertAction(
             title: LocalizedString.LobbieInfo.closeAlertOkAction,
-            style: .default) { _ in super.onCloseTap() }
+            style: .default) { [weak self] _ in
+                self?.quitFromLobbie {
+                    self?.dismiss(animated: true)
+                }
+            }
         let cancelAction = UIAlertAction(
             title: LocalizedString.LobbieInfo.closeAlertCancelAction,
             style: .cancel

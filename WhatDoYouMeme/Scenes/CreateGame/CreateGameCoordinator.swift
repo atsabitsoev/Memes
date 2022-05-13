@@ -11,8 +11,8 @@ final class CreateGameCoordinator {
     private let factory = BigFactory()
 
 
-    func showLobbieInfoVC(lobbie: Lobbie, fromVC: UIViewController) {
-        let lobbieInfoVC = factory.makeLobbieInfoVC(lobbie: lobbie)
+    func showLobbieInfoVC(lobbieId: String, fromVC: UIViewController) {
+        let lobbieInfoVC = factory.makeLobbieInfoVC(lobbieId: lobbieId)
         fromVC.open(vc: lobbieInfoVC, inStack: true, canGoBack: false)
     }
 }

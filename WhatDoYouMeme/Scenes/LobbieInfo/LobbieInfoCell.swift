@@ -1,56 +1,54 @@
 //
-//  LobbiesListCell.swift
+//  LobbieInfoCell.swift
 //  WhatDoYouMeme
 //
-//  Created by Ацамаз Бицоев on 11.05.2022.
+//  Created by Ацамаз Бицоев on 13.05.2022.
 //
 
 import UIKit
 
-final class LobbiesListCell: UITableViewCell {
+final class LobbieInfoCell: UITableViewCell {
     private enum Constants {
-        static let mainCardVerticalInsets: CGFloat = 6
+        static let mainCardVerticalInsets: CGFloat = .zero
         static let horizontalStackVerticalInsets: CGFloat = 16
         static let horizontalStackSpacing: CGFloat = 8
-        static let cardCornerRadius: CGFloat = 16
-        static let highlightDuration: CGFloat = 0.3
+        static let cardCornerRadius: CGFloat = 24
+    }
+
+    enum State {
+        case first
+        case middle
+        case last
+        case only
     }
 
 
-    static let identifier: String = "LobbiesListCell"
+    static let identifier: String = "LobbieInfoCell"
 
 
     private let mainCardView: UIView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.backgroundColor = .mainCardViewInCellBackground
-        $0.layer.cornerRadius = Constants.cardCornerRadius
         $0.clipsToBounds = true
+        $0.layer.cornerRadius = Constants.cardCornerRadius
         return $0
     }(UIView())
     private let horizontalStack: UIStackView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.axis = .horizontal
-        $0.alignment = .center
         $0.spacing = Constants.horizontalStackSpacing
         return $0
     }(UIStackView())
-    private let titleLabel: UILabel = {
+    private let nameLabel: UILabel = {
         $0.numberOfLines = .zero
         $0.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         return $0
     }(UILabel())
-    private let countLabel: UILabel = {
+    private let readyLabel: UILabel = {
+        $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         $0.textAlignment = .right
-        $0.setContentCompressionResistancePriority(.required, for: .horizontal)
         return $0
     }(UILabel())
-    private let disclosureImageView: UIImageView = {
-        $0.image = UIImage(systemName: "chevron.right")
-        $0.tintColor = UIColor.disclosureIndicator
-        $0.setContentHuggingPriority(.required, for: .horizontal)
-        $0.setContentCompressionResistancePriority(.required, for: .horizontal)
-        return $0
-    }(UIImageView())
 
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -68,31 +66,38 @@ final class LobbiesListCell: UITableViewCell {
         updateHorizontalStackConstraints()
     }
 
-    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
-        super.setHighlighted(highlighted, animated: animated)
-        mainCardView.backgroundColor = highlighted || isSelected ? UIColor.lobbieListCardHighlighted : UIColor.mainCardViewInCellBackground
-    }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        mainCardView.backgroundColor = selected || isHighlighted ? UIColor.lobbieListCardHighlighted : UIColor.mainCardViewInCellBackground
-    }
+    func updateData(_ player: Player, isReady: Bool, state: State = .middle) {
+        nameLabel.text = player.name
+        let textColor = isReady ? UIColor.lobbieInfoReadyCellTextColor : UIColor.lobbieInfoNotReadyCellTextColor
+        nameLabel.textColor = textColor
+        readyLabel.textColor = textColor
+        mainCardView.backgroundColor = isReady ? UIColor.lobbieInfoReadyCellBackground : UIColor.mainCardViewInCellBackground
+        readyLabel.text = isReady ? LocalizedString.LobbieInfo.ready : LocalizedString.LobbieInfo.notReady
 
-
-    func updateData(_ lobbie: Lobbie) {
-        titleLabel.text = lobbie.name
-        countLabel.text = "\(lobbie.membersPaths.count)" + " участн."
+        var cornersToMask: CACornerMask = []
+        switch state {
+        case .first:
+            cornersToMask = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        case .middle:
+            cornersToMask = []
+        case .last:
+            cornersToMask = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        case .only:
+            cornersToMask = [.layerMaxXMaxYCorner, .layerMaxXMinYCorner, .layerMinXMinYCorner, .layerMinXMaxYCorner]
+        }
+        mainCardView.layer.maskedCorners = cornersToMask
     }
 }
 
 
 // MARK: - Private
-private extension LobbiesListCell {
+private extension LobbieInfoCell {
     func setupCell() {
         setNeedsUpdateConstraints()
         contentView.backgroundColor = .background
 
-        horizontalStack.addArrangedSubviews(titleLabel, countLabel, disclosureImageView)
+        horizontalStack.addArrangedSubviews(nameLabel, readyLabel)
         mainCardView.addSubview(horizontalStack)
         contentView.addSubview(mainCardView)
     }
@@ -100,7 +105,7 @@ private extension LobbiesListCell {
 
 
 // MARK: - Constraints
-private extension LobbiesListCell {
+private extension LobbieInfoCell {
     func updateHorizontalStackConstraints() {
         NSLayoutConstraint.activate([
             horizontalStack.topAnchor.constraint(equalTo: mainCardView.topAnchor, constant: Constants.horizontalStackVerticalInsets),

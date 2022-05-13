@@ -26,9 +26,9 @@ final class BigFactory {
         return withNavigator ? lobbiesListVC.navigated(by: makeNavigator()) : lobbiesListVC
     }
 
-    func makeLobbieInfoVC(lobbie: Lobbie, withNavigator: Bool = false) -> UIViewController {
+    func makeLobbieInfoVC(lobbieId: String, withNavigator: Bool = false) -> UIViewController {
         let interactor = LobbieInfoInteractor()
-        let lobbieInfoVC = LobbieInfoController(interactor: interactor, lobbie: lobbie)
+        let lobbieInfoVC = LobbieInfoController(interactor: interactor, lobbieId: lobbieId)
         return withNavigator ? lobbieInfoVC.navigated(by: makeNavigator()) : lobbieInfoVC
     }
 
@@ -44,6 +44,16 @@ final class BigFactory {
 private extension BigFactory {
     func makeNavigator() -> UINavigationController {
         let navigator = UINavigationController()
+        navigator.navigationBar.isTranslucent = false
+
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithDefaultBackground()
+        appearance.backgroundColor = UIColor.background
+        appearance.shadowColor = nil
+
+        navigator.navigationBar.standardAppearance = appearance
+        navigator.navigationBar.scrollEdgeAppearance = navigator.navigationBar.standardAppearance
+
         return navigator
     }
 }

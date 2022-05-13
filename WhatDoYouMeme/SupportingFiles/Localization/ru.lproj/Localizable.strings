@@ -17,6 +17,8 @@ lobbiesList.title = "Поиск игры";
 lobbieInfo.closeAlertMessage = "Вы уверены, что хотите покинуть лобби?";
 lobbieInfo.closeAlertOkAction = "Да";
 lobbieInfo.closeAlertCancelAction = "Нет";
+lobbieInfo.ready = "готов";
+lobbieInfo.notReady = "не готов";
 
 createGame.title = "Создать игру";
 createGame.closeAlertTitle = "Вы уверены?";
