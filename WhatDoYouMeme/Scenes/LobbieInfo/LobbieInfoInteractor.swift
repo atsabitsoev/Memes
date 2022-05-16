@@ -8,7 +8,7 @@
 import Foundation
 
 final class LobbieInfoInteractor {
-    let firestore = FirestoreService()
+    let firestore = FirestoreService.shared
     let userService = UserService.shared
 
 

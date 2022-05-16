@@ -8,7 +8,7 @@
 import Foundation
 
 final class LobbiesListInteractor {
-    private let firestore = FirestoreService()
+    private let firestore = FirestoreService.shared
 
 
     func getLobbies(_ handler: @escaping (([Lobbie]) -> Void)) {

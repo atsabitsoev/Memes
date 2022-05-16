@@ -8,10 +8,15 @@
 import FirebaseFirestore
 
 final class FirestoreService {
+    private init() {}
+    static let shared = FirestoreService()
     private let db = Firestore.firestore()
 
 
     private var currentLobbieId: String?
+
+    /// Сохраняется при сворачивании приложения
+    private var lastLobbieId: String?
 
 
     private var temporaryPlayersArray: [Player] = []
@@ -110,7 +115,7 @@ final class FirestoreService {
         }
     }
 
-    func quitFromLobbie(_ handler: (() -> Void)? = nil) {
+    func quitFromLobbie(saveLastLobbie: Bool = false, _ handler: (() -> Void)? = nil) {
         guard let lobbieId = currentLobbieId else { return }
         db.collection(CollectionsKeys.lobbies.rawValue).document(lobbieId).getDocument { [weak self] snapshot, error in
             guard let strongSelf = self, let snapshot = snapshot, let userId = UserService.shared.getUserId() else {
@@ -132,13 +137,14 @@ final class FirestoreService {
                 snapshot.reference.delete(completion: { _ in handler?() })
             }
             strongSelf.currentLobbieId = nil
+            strongSelf.lastLobbieId = saveLastLobbie ? lobbieId : nil
         }
     }
 
-    func enterInLobbie(lobbieId: String, _ handler: @escaping () -> Void) {
+    func enterInLobbie(lobbieId: String, _ handler: (() -> Void)? = nil) {
         db.collection(CollectionsKeys.lobbies.rawValue).document(lobbieId).getDocument { [weak self] snapshot, error in
             guard let strongSelf = self, let snapshot = snapshot, snapshot.exists, let userId = UserService.shared.getUserId() else {
-                handler()
+                handler?()
                 return
             }
             var members = snapshot.get(FieldsKeys.members.rawValue) as? [DocumentReference] ?? []
@@ -146,14 +152,25 @@ final class FirestoreService {
             let currentPlayerRef = strongSelf.db.collection(CollectionsKeys.players.rawValue).document(userId)
             if !members.contains(currentPlayerRef) {
                 members.append(currentPlayerRef)
-                snapshot.reference.setData([FieldsKeys.members.rawValue: members], mergeFields: [FieldsKeys.members.rawValue], completion: { _ in handler() })
+                snapshot.reference.setData([FieldsKeys.members.rawValue: members], mergeFields: [FieldsKeys.members.rawValue], completion: { _ in handler?() })
             }
             if readyMembers.contains(currentPlayerRef) {
                 readyMembers.removeAll(where: { $0 == currentPlayerRef })
-                snapshot.reference.setData([FieldsKeys.readyMembers.rawValue: readyMembers], mergeFields: [FieldsKeys.readyMembers.rawValue], completion: { _ in handler() })
+                snapshot.reference.setData([FieldsKeys.readyMembers.rawValue: readyMembers], mergeFields: [FieldsKeys.readyMembers.rawValue], completion: { _ in handler?() })
             }
             strongSelf.currentLobbieId = lobbieId
         }
+    }
+
+    func enterLastLobbie() {
+        guard let lastLobbieId = lastLobbieId else {
+            return
+        }
+        enterInLobbie(lobbieId: lastLobbieId)
+    }
+
+    func clearLastLobbie() {
+        lastLobbieId = nil
     }
 }
 

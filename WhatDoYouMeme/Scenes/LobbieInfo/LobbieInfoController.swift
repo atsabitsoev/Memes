@@ -41,10 +41,9 @@ final class LobbieInfoController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         addCloseButton()
-        loadLobbie()
-        enterInLobbie()
-        NotificationCenter.default.addObserver(self, selector: #selector(onAppExit), name: UIApplication.willResignActiveNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(onAppEnterForeground), name: UIApplication.didBecomeActiveNotification, object: nil)
+        enterInLobbie { [weak self] in
+            self?.loadLobbie()
+        }
     }
 
     override func onCloseTap() {
@@ -57,20 +56,6 @@ final class LobbieInfoController: UIViewController {
         lobbieInfoView.setLoading(true)
         interactor.toggleReady(lobbieId: lobbieId) { [weak self] in
             self?.lobbieInfoView.setLoading(false)
-        }
-    }
-
-    @objc
-    func onAppExit() {
-        quitFromLobbie()
-    }
-
-    @objc
-    func onAppEnterForeground() {
-        if players.count == .zero {
-            dismiss(animated: true)
-        } else {
-            enterInLobbie()
         }
     }
 }
@@ -110,10 +95,11 @@ private extension LobbieInfoController {
         }
     }
 
-    func enterInLobbie() {
+    func enterInLobbie(_ handler: @escaping () -> Void) {
         lobbieInfoView.setLoading(true)
         interactor.enterInLobbie(lobbieId: lobbieId) { [weak self] in
             self?.lobbieInfoView.setLoading(false)
+            handler()
         }
     }
 

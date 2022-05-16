@@ -8,7 +8,7 @@
 import Foundation
 
 final class CreateGameInteractor {
-    private let firestore: FirestoreService = FirestoreService()
+    private let firestore: FirestoreService = FirestoreService.shared
 
 
     func createLobbie(withName name: String, _ handler: @escaping (Lobbie?) -> Void) {
