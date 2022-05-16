@@ -137,7 +137,7 @@ final class FirestoreService {
 
     func enterInLobbie(lobbieId: String, _ handler: @escaping () -> Void) {
         db.collection(CollectionsKeys.lobbies.rawValue).document(lobbieId).getDocument { [weak self] snapshot, error in
-            guard let strongSelf = self, let snapshot = snapshot, let userId = UserService.shared.getUserId() else {
+            guard let strongSelf = self, let snapshot = snapshot, snapshot.exists, let userId = UserService.shared.getUserId() else {
                 handler()
                 return
             }

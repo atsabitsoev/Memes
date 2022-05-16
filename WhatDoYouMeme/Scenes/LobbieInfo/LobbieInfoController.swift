@@ -67,7 +67,11 @@ final class LobbieInfoController: UIViewController {
 
     @objc
     func onAppEnterForeground() {
-        enterInLobbie()
+        if players.count == .zero {
+            dismiss(animated: true)
+        } else {
+            enterInLobbie()
+        }
     }
 }
 
@@ -80,6 +84,7 @@ private extension LobbieInfoController {
         interactor.loadLobbie(byId: lobbieId) { [weak self] lobbie in
             guard let strongSelf = self, let lobbie = lobbie else {
                 self?.lobbieInfoView.setLoading(false)
+                self?.dismiss(animated: true)
                 return
             }
             self?.lobbie = lobbie
