@@ -74,7 +74,8 @@ final class FirestoreService {
                 id: newDocumentRef.documentID,
                 name: name,
                 membersPaths: [],
-                readyMembersPaths: []
+                readyMembersPaths: [],
+                gameId: nil
             )
             handler(createdLobbie)
         }
@@ -162,6 +163,94 @@ final class FirestoreService {
         }
     }
 
+    func createGame(fromLobbie lobbieId: String, _ handler: @escaping () -> Void) {
+        db
+            .collection(CollectionsKeys.developerData.rawValue)
+            .document(DocumentKeys.gamesData.rawValue)
+            .getDocument { [weak self] snapshot, error in
+                guard let strongSelf = self,
+                      let snapshotData = snapshot?.data() else {
+                    handler()
+                    return
+                }
+
+                let allSituations = snapshotData[FieldsKeys.situations.rawValue] as? [String] ?? []
+                var allSituations50Random = Set<String>()
+                while allSituations50Random.count < 2 {
+                    let index = Int.random(in: 0..<allSituations.count)
+                    allSituations50Random.insert(allSituations[index])
+                }
+
+                let allMemes = snapshotData[FieldsKeys.memes.rawValue] as? [String] ?? []
+
+                strongSelf.db
+                    .collection(CollectionsKeys.lobbies.rawValue)
+                    .document(lobbieId)
+                    .getDocument { snapshot, error in
+                        guard let snapshotData = snapshot?.data(),
+                              let playersRefs = snapshotData[FieldsKeys.members.rawValue] as? [DocumentReference] else {
+                            handler()
+                            return
+                        }
+
+                        let playersIds = playersRefs.map(\.documentID)
+                        guard playersIds.first == UserService.shared.getUserId() else {
+                            handler()
+                            return
+                        }
+                        var playersValue: [[String: Any]] = []
+                        var takenMemesIndexes: [Int] = []
+                        for playersRef in playersRefs {
+                            var hand: [String] = []
+                            while hand.count < 2 {
+                                let memeIndex = Int.random(in: 0..<allMemes.count)
+                                if takenMemesIndexes.contains(memeIndex) { continue }
+                                let newMeme = allMemes[memeIndex]
+                                hand.append(newMeme)
+                                takenMemesIndexes.append(memeIndex)
+                            }
+
+                            let newPlayer: [String: Any] = [
+                                FieldsKeys.isOnline.rawValue: true,
+                                FieldsKeys.ref.rawValue: playersRef,
+                                FieldsKeys.hand.rawValue: hand
+                            ]
+                            playersValue.append(newPlayer)
+                        }
+
+                        let currentStep: [String: Any] = [
+                            FieldsKeys.index.rawValue: 0
+                        ]
+
+                        let newGameData: [String: Any] = [
+                            FieldsKeys.situations.rawValue: Array(allSituations50Random),
+                            FieldsKeys.players.rawValue: playersValue,
+                            FieldsKeys.currentStep.rawValue: currentStep
+                        ]
+                        let newGameRef = strongSelf.db
+                            .collection(CollectionsKeys.games.rawValue)
+                            .document()
+                        let newGameId = newGameRef.documentID
+                        newGameRef.setData(newGameData) { error in
+                            guard error == nil else {
+                                handler()
+                                return
+                            }
+
+                            let newLobbieData: [String: Any] = [
+                                FieldsKeys.gameId.rawValue: newGameId
+                            ]
+                            strongSelf.db
+                                .collection(CollectionsKeys.lobbies.rawValue)
+                                .document(lobbieId)
+                                .setData(newLobbieData, mergeFields: [FieldsKeys.gameId.rawValue]) { error in
+                                    handler()
+                                }
+                        }
+                    }
+            }
+    }
+
     func enterLastLobbie() {
         guard let lastLobbieId = lastLobbieId else {
             return
@@ -185,7 +274,8 @@ private extension FirestoreService {
         let membersPaths = membersRefs.map(\.path)
         let readyMembersRefs = data[FieldsKeys.readyMembers.rawValue] as? [DocumentReference] ?? []
         let readyMembersPaths = readyMembersRefs.map(\.path)
-        return Lobbie(id: id, name: name, membersPaths: membersPaths, readyMembersPaths: readyMembersPaths)
+        let gameId = data[FieldsKeys.gameId.rawValue] as? String
+        return Lobbie(id: id, name: name, membersPaths: membersPaths, readyMembersPaths: readyMembersPaths, gameId: gameId)
     }
 }
 
@@ -193,10 +283,27 @@ private extension FirestoreService {
 fileprivate enum CollectionsKeys: String {
     case lobbies
     case players
+    case games
+    case developerData
+}
+
+fileprivate enum DocumentKeys: String {
+    case gamesData
 }
 
 fileprivate enum FieldsKeys: String {
     case name
     case members
     case readyMembers
+    case situations
+    case memes
+    case players
+    case hand
+    case isOnline
+    case ref
+    case steppedPlayers
+    case card
+    case index
+    case currentStep
+    case gameId
 }

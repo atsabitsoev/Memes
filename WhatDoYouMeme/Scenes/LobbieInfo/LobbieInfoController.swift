@@ -74,8 +74,12 @@ private extension LobbieInfoController {
             }
             self?.lobbie = lobbie
             strongSelf.title = lobbie.name
-            if lobbie.membersPaths.count > 1 && Set(lobbie.readyMembersPaths) == Set(lobbie.membersPaths) {
-                strongSelf.coordinator.showGameVC(from: strongSelf)
+            if let gameId = lobbie.gameId {
+                strongSelf.coordinator.showGameVC(gameId: gameId, from: strongSelf)
+            } else if lobbie.membersPaths.count > 1 && Set(lobbie.readyMembersPaths) == Set(lobbie.membersPaths) {
+                strongSelf.createGame {
+                    print("игра создана")
+                }
             }
 
             strongSelf.interactor.loadPlayers(withPaths: lobbie.membersPaths) { [weak self] players in
@@ -93,6 +97,10 @@ private extension LobbieInfoController {
                 strongSelf.lobbieInfoView.setLoading(false)
             }
         }
+    }
+
+    func createGame(_ handler: @escaping () -> Void) {
+        interactor.createGame(lobbieId: lobbieId, handler)
     }
 
     func enterInLobbie(_ handler: @escaping () -> Void) {

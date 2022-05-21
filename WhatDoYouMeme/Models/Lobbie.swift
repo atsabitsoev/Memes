@@ -12,4 +12,5 @@ struct Lobbie {
     let name: String
     let membersPaths: [String]
     let readyMembersPaths: [String]
+    let gameId: String?
 }

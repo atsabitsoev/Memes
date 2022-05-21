@@ -40,8 +40,8 @@ final class BigFactory {
         return withNavigator ? createGameVC.navigated(by: makeNavigator()) : createGameVC
     }
 
-    func makeGameVC(withNavigator: Bool = false) -> UIViewController {
-        let gameVC = GameController()
+    func makeGameVC(gameId: String, withNavigator: Bool = false) -> UIViewController {
+        let gameVC = GameController(gameId: gameId)
         return withNavigator ? gameVC.navigated(by: makeNavigator()) : gameVC
     }
 }

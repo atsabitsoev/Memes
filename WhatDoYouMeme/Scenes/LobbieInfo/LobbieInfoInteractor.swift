@@ -35,4 +35,8 @@ final class LobbieInfoInteractor {
     func quitFromLobbie(_ handler: (() -> Void)? = nil) {
         firestore.quitFromLobbie(handler)
     }
+
+    func createGame(lobbieId: String, _ handler: @escaping () -> Void) {
+        firestore.createGame(fromLobbie: lobbieId, handler)
+    }
 }

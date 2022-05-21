@@ -12,6 +12,11 @@
 		2D5B2950282EE7CC000E37FC /* GameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5B294F282EE7CC000E37FC /* GameController.swift */; };
 		2D5B2952282EE816000E37FC /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5B2951282EE816000E37FC /* GameView.swift */; };
 		2D5B2954282EE8F8000E37FC /* LobbieInfoCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5B2953282EE8F8000E37FC /* LobbieInfoCoordinator.swift */; };
+		2D6FFF012838F27400ADF7FE /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 2D6FFF002838F27400ADF7FE /* SDWebImage */; };
+		2D6FFF032838F2D500ADF7FE /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D6FFF022838F2D500ADF7FE /* Game.swift */; };
+		2D6FFF062838FEBE00ADF7FE /* SituationLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D6FFF052838FEBE00ADF7FE /* SituationLabel.swift */; };
+		2D6FFF082838FFD600ADF7FE /* HandView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D6FFF072838FFD600ADF7FE /* HandView.swift */; };
+		2D6FFF0A2839001800ADF7FE /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D6FFF092839001800ADF7FE /* CardView.swift */; };
 		2D800E64282D4D4800D6FA37 /* MemesTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D800E63282D4D4800D6FA37 /* MemesTextfield.swift */; };
 		2D9E3789282BBF6300CC54C5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9E3788282BBF6300CC54C5 /* AppDelegate.swift */; };
 		2D9E378B282BBF6300CC54C5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9E378A282BBF6300CC54C5 /* SceneDelegate.swift */; };
@@ -63,6 +68,10 @@
 		2D5B294F282EE7CC000E37FC /* GameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameController.swift; sourceTree = "<group>"; };
 		2D5B2951282EE816000E37FC /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		2D5B2953282EE8F8000E37FC /* LobbieInfoCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbieInfoCoordinator.swift; sourceTree = "<group>"; };
+		2D6FFF022838F2D500ADF7FE /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
+		2D6FFF052838FEBE00ADF7FE /* SituationLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SituationLabel.swift; sourceTree = "<group>"; };
+		2D6FFF072838FFD600ADF7FE /* HandView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandView.swift; sourceTree = "<group>"; };
+		2D6FFF092839001800ADF7FE /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		2D800E63282D4D4800D6FA37 /* MemesTextfield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemesTextfield.swift; sourceTree = "<group>"; };
 		2D9E3785282BBF6300CC54C5 /* WhatDoYouMeme.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhatDoYouMeme.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D9E3788282BBF6300CC54C5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -112,6 +121,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2D6FFF012838F27400ADF7FE /* SDWebImage in Frameworks */,
 				2DA91A12282C30C80081686A /* FirebaseAnalytics in Frameworks */,
 				2DA91A14282C30C80081686A /* FirebaseAuth in Frameworks */,
 				2DA91A1A282C30C80081686A /* FirebaseMessaging in Frameworks */,
@@ -126,10 +136,21 @@
 		2D5B2956282EE96D000E37FC /* Game */ = {
 			isa = PBXGroup;
 			children = (
+				2D6FFF042838FE9900ADF7FE /* Views */,
 				2D5B294F282EE7CC000E37FC /* GameController.swift */,
 				2D5B2951282EE816000E37FC /* GameView.swift */,
 			);
 			path = Game;
+			sourceTree = "<group>";
+		};
+		2D6FFF042838FE9900ADF7FE /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2D6FFF052838FEBE00ADF7FE /* SituationLabel.swift */,
+				2D6FFF072838FFD600ADF7FE /* HandView.swift */,
+				2D6FFF092839001800ADF7FE /* CardView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		2D9E377C282BBF6300CC54C5 = {
@@ -302,6 +323,7 @@
 			children = (
 				2DA91A1F282C39210081686A /* Lobbie.swift */,
 				2DA91A21282C399B0081686A /* Player.swift */,
+				2D6FFF022838F2D500ADF7FE /* Game.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -340,6 +362,7 @@
 				2DA91A15282C30C80081686A /* FirebaseFirestore */,
 				2DA91A17282C30C80081686A /* FirebaseFunctions */,
 				2DA91A19282C30C80081686A /* FirebaseMessaging */,
+				2D6FFF002838F27400ADF7FE /* SDWebImage */,
 			);
 			productName = WhatDoYouMeme;
 			productReference = 2D9E3785282BBF6300CC54C5 /* WhatDoYouMeme.app */;
@@ -372,6 +395,7 @@
 			mainGroup = 2D9E377C282BBF6300CC54C5;
 			packageReferences = (
 				2DA91A10282C30C80081686A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				2D6FFEFF2838F27400ADF7FE /* XCRemoteSwiftPackageReference "SDWebImage" */,
 			);
 			productRefGroup = 2D9E3786282BBF6300CC54C5 /* Products */;
 			projectDirPath = "";
@@ -407,6 +431,7 @@
 				2D9E37CC282C050E00CC54C5 /* UIViewController+Extension.swift in Sources */,
 				2DB7ED22282D8A1900D015F7 /* LobbieInfoController.swift in Sources */,
 				2D9E37B4282BC69700CC54C5 /* String+Extension.swift in Sources */,
+				2D6FFF0A2839001800ADF7FE /* CardView.swift in Sources */,
 				2D9E37C3282C029A00CC54C5 /* SettingsController.swift in Sources */,
 				2D9E37B6282BC9C700CC54C5 /* UIBarButton+Extension.swift in Sources */,
 				2D5B294E282E3105000E37FC /* LobbieInfoCell.swift in Sources */,
@@ -416,11 +441,13 @@
 				2DB7ED29282D8CB800D015F7 /* CreateGameCoordinator.swift in Sources */,
 				2DA91A22282C399B0081686A /* Player.swift in Sources */,
 				2DB7ED20282D862D00D015F7 /* CreateGameInteractor.swift in Sources */,
+				2D6FFF062838FEBE00ADF7FE /* SituationLabel.swift in Sources */,
 				2D9E3789282BBF6300CC54C5 /* AppDelegate.swift in Sources */,
 				2D9E37B9282BCC5000CC54C5 /* MemesButton.swift in Sources */,
 				2D4CA7BC282D6A8D0047B959 /* KeyboardNotificationsObserver.swift in Sources */,
 				2D9E37B1282BC59E00CC54C5 /* LocalizedString.swift in Sources */,
 				2DA91A1D282C36550081686A /* FirestoreService.swift in Sources */,
+				2D6FFF082838FFD600ADF7FE /* HandView.swift in Sources */,
 				2D9E37CF282C099C00CC54C5 /* LobbiesListController.swift in Sources */,
 				2D9E37D6282C0EA700CC54C5 /* CreateGameView.swift in Sources */,
 				2D9E37C7282C03D300CC54C5 /* MainMenuCoordinator.swift in Sources */,
@@ -432,6 +459,7 @@
 				2DB7ED1E282D849500D015F7 /* UserService.swift in Sources */,
 				2D9E37A6282BC19A00CC54C5 /* BigFactory.swift in Sources */,
 				2D9E378B282BBF6300CC54C5 /* SceneDelegate.swift in Sources */,
+				2D6FFF032838F2D500ADF7FE /* Game.swift in Sources */,
 				2D9E37BC282BCF5200CC54C5 /* GlobalConstants.swift in Sources */,
 				2D5B2952282EE816000E37FC /* GameView.swift in Sources */,
 				2D9E37A1282BC02700CC54C5 /* MainMenuView.swift in Sources */,
@@ -667,6 +695,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		2D6FFEFF2838F27400ADF7FE /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImage";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 		2DA91A10282C30C80081686A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -678,6 +714,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		2D6FFF002838F27400ADF7FE /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2D6FFEFF2838F27400ADF7FE /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
+		};
 		2DA91A11282C30C80081686A /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2DA91A10282C30C80081686A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
