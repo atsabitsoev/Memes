@@ -29,6 +29,10 @@ createGame.closeAlertCancelAction = "No";
 createGame.nameTextfieldPlaceholder = "Enter title";
 createGame.createButtonTitle = "Create";
 
+game.closeAlertMessage = "Are you sure you want to leave the game?";
+game.closeAlertOkAction = "Yes";
+game.closeAlertCancelAction = "No";
+
 errorAlertDefault.title = "Error";
 errorAlertDefault.message = "Something went wrong...";
 errorAlertDefault.okAction = "Ok";

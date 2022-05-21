@@ -29,6 +29,10 @@ createGame.closeAlertCancelAction = "Нет";
 createGame.nameTextfieldPlaceholder = "Введите название";
 createGame.createButtonTitle = "Создать";
 
+game.closeAlertMessage = "Вы уверены, что хотите покинуть игру?";
+game.closeAlertOkAction = "Да";
+game.closeAlertCancelAction = "Нет";
+
 errorAlertDefault.title = "Ошибка";
 errorAlertDefault.message = "Что-то пошло не так...";
 errorAlertDefault.okAction = "Ок";

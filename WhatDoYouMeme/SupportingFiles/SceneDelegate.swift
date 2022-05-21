@@ -17,7 +17,6 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let scene = (scene as? UIWindowScene) else { return }
-        firestore.clearLastLobbie()
         window = UIWindow(windowScene: scene)
         window?.rootViewController = factory.makeMainMenuVC(withNavigator: true)
         window?.makeKeyAndVisible()

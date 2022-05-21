@@ -9,6 +9,7 @@ import UIKit
 
 final class GameController: UIViewController {
     private var gameView: GameView!
+    private let interactor: GameInteractor
 
 
     private let gameId: String
@@ -19,8 +20,9 @@ final class GameController: UIViewController {
     }
 
 
-    init(gameId: String) {
+    init(interactor: GameInteractor, gameId: String) {
         self.gameId = gameId
+        self.interactor = interactor
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -39,41 +41,54 @@ final class GameController: UIViewController {
         addCloseButton()
         loadGame()
     }
+
+    override func onCloseTap() {
+        closeAlert()
+    }
 }
 
 
+// MARK: - Private
 private extension GameController {
     func loadGame() {
-        let newGame = Game(
-            players: [
-                Game.Player(
-                    hand: [
-                        "https://c.wallhere.com/photos/fc/9a/1366x768_px_Canada_landscape_mountain_stars_Trees-1080526.jpg!d",
-                        "https://c.wallhere.com/photos/22/27/2560x1600_px_landscape_nature-1077192.jpg!d"
-                    ],
-                    isOnline: true,
-                    playerRef: "players/wZm1cqFIC8FXxA3ESU8R"
-                ),
-                Game.Player(
-                    hand: [
-                        "https://verol.net/images/virtuemart/product/PP00068V.jpg",
-                        "https://divino-d.com/uploads/product/31900/31999/619ec4d6bd7711e7a22f1866da87aa23_69f3d2ce3dde11eaa2c11866da87aa23.jpg"
-                    ],
-                    isOnline: true,
-                    playerRef: "players/shHWww4L7HXxgYZPLvgH"
-                )
-            ],
-            situations: [
-                "Когда обосрался на глазах у родителей жены",
-                "Когда друг не возвращает деньги, но ездит на такси комфорт класса",
-                "Когда надел батин пиджак и нашел во внутреннем кармане презерватив"
-            ],
-            currentStep: Game.Step(index: 0)
-        )
-        game = newGame
+        interactor.loadGame(withId: gameId) { [weak self] game in
+            guard let strongSelf = self,
+                  let game = game else {
+                self?.dismiss(animated: true)
+                return
+            }
+            strongSelf.game = game
+        }
     }
 
     func onGameUpdate(_ game: Game) {
         gameView.setGame(game)
+    }
+
+    func quitFromGame(_ handler: @escaping (Bool) -> Void) {
+        interactor.quitGame(withId: gameId, handler)
+    }
+
+    func closeAlert() {
+        let alert = UIAlertController(
+            title: nil,
+            message: LocalizedString.Game.closeAlertMessage,
+            preferredStyle: .alert
+        )
+        let okAction = UIAlertAction(
+            title: LocalizedString.Game.closeAlertOkAction,
+            style: .default) { [weak self] _ in
+                self?.quitFromGame { success in
+                    guard success else { return }
+                    self?.dismiss(animated: true)
+                }
+            }
+        let cancelAction = UIAlertAction(
+            title: LocalizedString.Game.closeAlertCancelAction,
+            style: .cancel
+        )
+        alert.addAction(cancelAction)
+        alert.addAction(okAction)
+        self.present(alert, animated: true)
     }
 }

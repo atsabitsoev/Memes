@@ -9,7 +9,13 @@ import Foundation
 
 struct Game {
     struct Step {
+        struct SteppedPlayer {
+            let ref: String
+            let card: String
+        }
+
         let index: Int
+        let steppedPlayers: [SteppedPlayer]
     }
 
     struct Player {

@@ -14,6 +14,7 @@ final class FirestoreService {
 
 
     private var currentLobbieId: String?
+    private var currentGameId: String?
 
     /// Сохраняется при сворачивании приложения
     private var lastLobbieId: String?
@@ -240,14 +241,109 @@ final class FirestoreService {
                             let newLobbieData: [String: Any] = [
                                 FieldsKeys.gameId.rawValue: newGameId
                             ]
-                            strongSelf.db
+                            let lobbieRef = strongSelf.db
                                 .collection(CollectionsKeys.lobbies.rawValue)
                                 .document(lobbieId)
-                                .setData(newLobbieData, mergeFields: [FieldsKeys.gameId.rawValue]) { error in
+
+                            lobbieRef.setData(newLobbieData, mergeFields: [FieldsKeys.gameId.rawValue]) { _ in
+                                lobbieRef.delete { _ in
                                     handler()
                                 }
+                            }
                         }
                     }
+            }
+    }
+
+    func loadGame(withId gameId: String, _ handler: @escaping (Game?) -> Void) {
+        db
+            .collection(CollectionsKeys.games.rawValue)
+            .document(gameId)
+            .addSnapshotListener { snapshot, error in
+                guard let snapshotData = snapshot?.data(),
+                      let playersData = snapshotData[FieldsKeys.players.rawValue] as? [[String: Any]],
+                      let currentStepData = snapshotData[FieldsKeys.currentStep.rawValue] as? [String: Any] else {
+                    handler(nil)
+                    return
+                }
+
+                let players = playersData.map { playerData -> Game.Player in
+                    let hand: [String] = playerData[FieldsKeys.hand.rawValue] as? [String] ?? []
+                    let isOnline: Bool = playerData[FieldsKeys.isOnline.rawValue] as? Bool ?? false
+                    let ref: DocumentReference? = playerData[FieldsKeys.ref.rawValue] as? DocumentReference
+                    let refString: String = ref?.path ?? .empty
+                    return Game.Player(hand: hand, isOnline: isOnline, playerRef: refString)
+                }
+                let situations = snapshotData[FieldsKeys.situations.rawValue] as? [String] ?? []
+
+                let index: Int = currentStepData[FieldsKeys.index.rawValue] as? Int ?? .zero
+                let steppedPlayersData: [[String: Any]] = currentStepData[FieldsKeys.steppedPlayers.rawValue] as? [[String: Any]] ?? []
+                let steppedPlayers = steppedPlayersData.map { steppedPlayerData -> Game.Step.SteppedPlayer in
+                    let ref: DocumentReference? = steppedPlayerData[FieldsKeys.ref.rawValue] as? DocumentReference
+                    let refPath: String = ref?.path ?? .empty
+                    let card: String = steppedPlayerData[FieldsKeys.card.rawValue] as? String ?? .empty
+                    return Game.Step.SteppedPlayer(ref: refPath, card: card)
+                }
+                let currentStep = Game.Step(index: index, steppedPlayers: steppedPlayers)
+                let game = Game(
+                    players: players,
+                    situations: situations,
+                    currentStep: currentStep
+                )
+                handler(game)
+            }
+    }
+
+    func quitFromGame(withId gameId: String, _ handler: @escaping (Bool) -> Void) {
+        db
+            .collection(CollectionsKeys.games.rawValue)
+            .document(gameId)
+            .getDocument { [weak self] snapshot, error in
+                guard let strongSelf = self,
+                      let snapshotData = snapshot?.data(),
+                      var playersData = snapshotData[FieldsKeys.players.rawValue] as? [[String: Any]],
+                      var currentStepData = snapshotData[FieldsKeys.currentStep.rawValue] as? [String: Any] else {
+                    handler(false)
+                    return
+                }
+
+                let userId = UserService.shared.getUserId() ?? .empty
+                playersData.removeAll { playerData -> Bool in
+                    let ref = playerData[FieldsKeys.ref.rawValue] as? DocumentReference
+                    let playerId = ref?.documentID ?? .empty
+                    return playerId == userId
+                }
+                var steppedPlayersData: [[String: Any]] = currentStepData[FieldsKeys.steppedPlayers.rawValue] as? [[String: Any]] ?? []
+                steppedPlayersData.removeAll { steppedPlayerData -> Bool in
+                    let ref = steppedPlayerData[FieldsKeys.ref.rawValue] as? DocumentReference
+                    let playerId = ref?.documentID ?? .empty
+                    return playerId == userId
+                }
+                currentStepData[FieldsKeys.steppedPlayers.rawValue] = steppedPlayersData
+
+                let newData: [String: Any] = [
+                    FieldsKeys.players.rawValue: playersData,
+                    FieldsKeys.currentStep.rawValue: currentStepData
+                ]
+                snapshot?.reference.setData(
+                    newData,
+                    mergeFields: [
+                        FieldsKeys.players.rawValue,
+                        FieldsKeys.currentStep.rawValue
+                    ],
+                    completion: { error in
+                        if error == nil {
+                            strongSelf.currentGameId = nil
+                            if playersData.isEmpty {
+                                strongSelf.removeGame(withId: gameId, handler: handler)
+                            } else {
+                                handler(true)
+                            }
+                        } else {
+                            handler(false)
+                        }
+                    }
+                )
             }
     }
 
@@ -256,10 +352,6 @@ final class FirestoreService {
             return
         }
         enterInLobbie(lobbieId: lastLobbieId)
-    }
-
-    func clearLastLobbie() {
-        lastLobbieId = nil
     }
 }
 
@@ -276,6 +368,16 @@ private extension FirestoreService {
         let readyMembersPaths = readyMembersRefs.map(\.path)
         let gameId = data[FieldsKeys.gameId.rawValue] as? String
         return Lobbie(id: id, name: name, membersPaths: membersPaths, readyMembersPaths: readyMembersPaths, gameId: gameId)
+    }
+
+
+    func removeGame(withId gameId: String, handler: @escaping (Bool) -> Void) {
+        db
+            .collection(CollectionsKeys.games.rawValue)
+            .document(gameId)
+            .delete { error in
+                handler(error == nil)
+            }
     }
 }
 

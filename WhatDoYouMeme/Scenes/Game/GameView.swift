@@ -8,7 +8,7 @@
 import UIKit
 
 final class GameView: UIView {
-    private let controller: GameController
+    private unowned let controller: GameController
 
 
     private let situationLabel: SituationLabel = {

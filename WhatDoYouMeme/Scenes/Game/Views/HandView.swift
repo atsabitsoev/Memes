@@ -69,6 +69,7 @@ private extension HandView {
     }
 
     func updateCards() {
+        stackView.removeAllArrangedSubviews()
         let cardViews: [UIView] = cardsLinks.map(CardView.init)
         stackView.addArrangedSubviews(cardViews)
     }
