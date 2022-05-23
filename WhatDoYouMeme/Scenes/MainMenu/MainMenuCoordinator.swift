@@ -25,4 +25,9 @@ final class MainMenuCoordinator {
         let createGameVC = factory.makeCreateGameVC(withNavigator: true)
         vc.open(vc: createGameVC, inStack: false)
     }
+
+    func showGameVC(gameId: String, fromVC vc: UIViewController) {
+        let gameVC = factory.makeGameVC(gameId: gameId, withNavigator: true)
+        vc.open(vc: gameVC, inStack: false)
+    }
 }

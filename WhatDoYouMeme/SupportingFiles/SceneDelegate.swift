@@ -24,10 +24,12 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func sceneWillResignActive(_ scene: UIScene) {
         firestore.quitFromLobbie(saveLastLobbie: true)
+        firestore.setOnlineInCurrentGame(false)
     }
 
     func sceneDidBecomeActive(_ scene: UIScene) {
         firestore.enterLastLobbie()
+        firestore.setOnlineInCurrentGame(true)
     }
 }
 

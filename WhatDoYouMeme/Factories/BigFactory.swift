@@ -10,7 +10,8 @@ import UIKit
 final class BigFactory {
     func makeMainMenuVC(withNavigator: Bool = false) -> UIViewController {
         let coordinator = MainMenuCoordinator()
-        let mainMenuVC = MainMenuController(coordinator: coordinator)
+        let interactor = MainMenuInteractor()
+        let mainMenuVC = MainMenuController(interactor: interactor, coordinator: coordinator)
         return withNavigator ? mainMenuVC.navigated(by: makeNavigator()) : mainMenuVC
     }
 

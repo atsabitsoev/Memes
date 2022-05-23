@@ -9,10 +9,12 @@ import UIKit
 
 final class MainMenuController: UIViewController {
     private var mainMenuView: MainMenuView!
+    private let interactor: MainMenuInteractor
     private let coordinator: MainMenuCoordinator
 
 
-    init(coordinator: MainMenuCoordinator) {
+    init(interactor: MainMenuInteractor, coordinator: MainMenuCoordinator) {
+        self.interactor = interactor
         self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
     }
@@ -31,6 +33,7 @@ final class MainMenuController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavBar()
+        showCurrentGameIfExists()
     }
 }
 
@@ -61,5 +64,10 @@ private extension MainMenuController {
             target: self,
             action: #selector(onSettingsTap)
         )
+    }
+
+    func showCurrentGameIfExists() {
+        guard let currentGameId = interactor.getCurrentGameId() else { return }
+        coordinator.showGameVC(gameId: currentGameId, fromVC: self)
     }
 }

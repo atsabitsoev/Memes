@@ -25,6 +25,7 @@ struct Game {
         let playerRef: String
     }
 
+    let id: String
     let players: [Player]
     let situations: [String]
     let currentStep: Step

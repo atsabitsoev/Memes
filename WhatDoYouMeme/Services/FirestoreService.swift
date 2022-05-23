@@ -14,7 +14,16 @@ final class FirestoreService {
 
 
     private var currentLobbieId: String?
-    private var currentGameId: String?
+
+    private let currentGameIdKey: String = "currentGameId"
+    private(set) var currentGameId: String? {
+        get {
+            UserDefaults.standard.string(forKey: currentGameIdKey)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: currentGameIdKey)
+        }
+    }
 
     /// Сохраняется при сворачивании приложения
     private var lastLobbieId: String?
@@ -259,8 +268,10 @@ final class FirestoreService {
         db
             .collection(CollectionsKeys.games.rawValue)
             .document(gameId)
-            .addSnapshotListener { snapshot, error in
-                guard let snapshotData = snapshot?.data(),
+            .addSnapshotListener { [weak self] snapshot, error in
+                guard let strongSelf = self,
+                      let snapshot = snapshot,
+                      let snapshotData = snapshot.data(),
                       let playersData = snapshotData[FieldsKeys.players.rawValue] as? [[String: Any]],
                       let currentStepData = snapshotData[FieldsKeys.currentStep.rawValue] as? [String: Any] else {
                     handler(nil)
@@ -286,10 +297,12 @@ final class FirestoreService {
                 }
                 let currentStep = Game.Step(index: index, steppedPlayers: steppedPlayers)
                 let game = Game(
+                    id: snapshot.documentID,
                     players: players,
                     situations: situations,
                     currentStep: currentStep
                 )
+                strongSelf.currentGameId = game.id
                 handler(game)
             }
     }
@@ -345,6 +358,36 @@ final class FirestoreService {
                     }
                 )
             }
+    }
+
+    func setOnlineInCurrentGame(_ isOnline: Bool) {
+        guard let currentGameId = currentGameId else { return }
+
+        let currentGameRef = db
+            .collection(CollectionsKeys.games.rawValue)
+            .document(currentGameId)
+
+        currentGameRef.getDocument { snapshot, error in
+            guard let snapshotData = snapshot?.data() else { return }
+            guard var players = snapshotData[FieldsKeys.players.rawValue] as? [[String: Any]] else { return }
+            guard let userId = UserService.shared.getUserId() else { return }
+
+            let currentPlayerIndex = players.firstIndex { playerData -> Bool in
+                let playerRef = playerData[FieldsKeys.ref.rawValue] as? DocumentReference
+                guard let playerId = playerRef?.documentID else { return false }
+                return playerId == userId
+            }
+            guard let currentPlayerIndex = currentPlayerIndex else { return }
+
+            var currentPlayer = players[currentPlayerIndex]
+            currentPlayer[FieldsKeys.isOnline.rawValue] = isOnline
+            players[currentPlayerIndex] = currentPlayer
+
+            let newData: [String: Any] = [
+                FieldsKeys.players.rawValue: players
+            ]
+            snapshot?.reference.setData(newData, mergeFields: [FieldsKeys.players.rawValue])
+        }
     }
 
     func enterLastLobbie() {
