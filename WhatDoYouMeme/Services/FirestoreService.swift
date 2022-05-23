@@ -8,9 +8,12 @@
 import FirebaseFirestore
 
 final class FirestoreService {
-    private init() {}
+    private init() {
+        db = Firestore.firestore()
+        db.settings.isPersistenceEnabled = false
+    }
     static let shared = FirestoreService()
-    private let db = Firestore.firestore()
+    private let db: Firestore
 
 
     private var currentLobbieId: String?
@@ -133,19 +136,30 @@ final class FirestoreService {
                 handler?()
                 return
             }
-            var members = snapshot.get(FieldsKeys.members.rawValue) as? [DocumentReference] ?? []
-            var readyMembers = snapshot.get(FieldsKeys.readyMembers.rawValue) as? [DocumentReference] ?? []
+            let members = snapshot.get(FieldsKeys.members.rawValue) as? [DocumentReference] ?? []
+            let readyMembers = snapshot.get(FieldsKeys.readyMembers.rawValue) as? [DocumentReference] ?? []
             let currentPlayerRef = strongSelf.db.collection(CollectionsKeys.players.rawValue).document(userId)
-            if members.contains(currentPlayerRef) {
-                members.removeAll(where: { $0 == currentPlayerRef })
-                snapshot.reference.setData([FieldsKeys.members.rawValue: members], mergeFields: [FieldsKeys.members.rawValue], completion: { _ in handler?() })
-            }
-            if readyMembers.contains(currentPlayerRef) {
-                readyMembers.removeAll(where: { $0 == currentPlayerRef })
-                snapshot.reference.setData([FieldsKeys.readyMembers.rawValue: readyMembers], mergeFields: [FieldsKeys.readyMembers.rawValue], completion: { _ in handler?() })
-            }
-            if members.count == .zero {
-                snapshot.reference.delete(completion: { _ in handler?() })
+            if let memberToRemove = members.first(where: { $0 == currentPlayerRef }) {
+                strongSelf.db.runTransaction { transaction, errorPointer in
+                    do {
+                        let document = try transaction.getDocument(snapshot.reference)
+                        let documentData = document.data() ?? [:]
+                        let members: [DocumentReference] = documentData.contains(where: { $0.key == FieldsKeys.members.rawValue }) ? documentData[FieldsKeys.members.rawValue] as? [DocumentReference] ?? [] : []
+                        if members.count == 1 {
+                            transaction.deleteDocument(snapshot.reference)
+                        } else {
+                            transaction.updateData([FieldsKeys.members.rawValue: FieldValue.arrayRemove([memberToRemove])], forDocument: snapshot.reference)
+                            if let memberToRemove = readyMembers.first(where: { $0 == currentPlayerRef }) {
+                                transaction.updateData([FieldsKeys.readyMembers.rawValue: FieldValue.arrayRemove([memberToRemove])], forDocument: snapshot.reference)
+                            }
+                        }
+                    } catch {
+                        print(error)
+                    }
+                    return nil
+                } completion: { _, _ in
+                    handler?()
+                }
             }
             strongSelf.currentLobbieId = nil
             strongSelf.lastLobbieId = saveLastLobbie ? lobbieId : nil
