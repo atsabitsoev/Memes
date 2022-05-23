@@ -85,7 +85,7 @@ private extension MemesButton {
     }
 
     func setupPrimaryStyle() {
-        backgroundColor = .primaryButton
+        backgroundColor = .primary
         setTitleColor(.primaryButtonTitle, for: .normal)
     }
 

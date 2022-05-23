@@ -10,7 +10,8 @@ import UIKit
 extension UIColor {
     static let background: UIColor = UIColor.secondarySystemBackground
 
-    static let primaryButton: UIColor = UIColor.systemBlue
+    static let primary: UIColor = UIColor.systemBlue
+    
     static let defaultButton: UIColor = UIColor.systemBackground
     static let defaultButtonTitle: UIColor = UIColor.label
     static let primaryButtonTitle: UIColor = UIColor.white
