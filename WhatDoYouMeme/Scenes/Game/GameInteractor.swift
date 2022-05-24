@@ -18,4 +18,12 @@ final class GameInteractor {
     func quitGame(withId gameId: String, _ handler: @escaping (Bool) -> Void) {
         firestore.quitFromGame(withId: gameId, handler)
     }
+
+    func makeStep(
+        gameId: String,
+        card: String,
+        handler: (() -> Void)?
+    ) {
+        firestore.makeStep(gameId: gameId, card: card, handler: handler)
+    }
 }

@@ -44,6 +44,7 @@ final class GameController: UIViewController {
 
     override func onCloseTap() {
         closeAlert()
+        interactor.makeStep(gameId: gameId, card: game.getMyHand()[0], handler: nil)
     }
 }
 

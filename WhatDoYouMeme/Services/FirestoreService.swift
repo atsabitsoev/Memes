@@ -10,6 +10,7 @@ import FirebaseFirestore
 final class FirestoreService {
     private init() {
         db = Firestore.firestore()
+        db.clearPersistence()
         db.settings.isPersistenceEnabled = false
     }
     static let shared = FirestoreService()
@@ -248,14 +249,10 @@ final class FirestoreService {
                             playersValue.append(newPlayer)
                         }
 
-                        let currentStep: [String: Any] = [
-                            FieldsKeys.index.rawValue: 0
-                        ]
-
                         let newGameData: [String: Any] = [
                             FieldsKeys.situations.rawValue: Array(allSituations50Random),
                             FieldsKeys.players.rawValue: playersValue,
-                            FieldsKeys.currentStep.rawValue: currentStep
+                            FieldsKeys.index.rawValue: 0
                         ]
                         let newGameRef = strongSelf.db
                             .collection(CollectionsKeys.games.rawValue)
@@ -292,8 +289,7 @@ final class FirestoreService {
                 guard let strongSelf = self,
                       let snapshot = snapshot,
                       let snapshotData = snapshot.data(),
-                      let playersData = snapshotData[FieldsKeys.players.rawValue] as? [[String: Any]],
-                      let currentStepData = snapshotData[FieldsKeys.currentStep.rawValue] as? [String: Any] else {
+                      let playersData = snapshotData[FieldsKeys.players.rawValue] as? [[String: Any]] else {
                     handler(nil)
                     return
                 }
@@ -307,8 +303,8 @@ final class FirestoreService {
                 }
                 let situations = snapshotData[FieldsKeys.situations.rawValue] as? [String] ?? []
 
-                let index: Int = currentStepData[FieldsKeys.index.rawValue] as? Int ?? .zero
-                let steppedPlayersData: [[String: Any]] = currentStepData[FieldsKeys.steppedPlayers.rawValue] as? [[String: Any]] ?? []
+                let index: Int = snapshotData[FieldsKeys.index.rawValue] as? Int ?? .zero
+                let steppedPlayersData: [[String: Any]] = snapshotData[FieldsKeys.steppedPlayers.rawValue] as? [[String: Any]] ?? []
                 let steppedPlayers = steppedPlayersData.map { steppedPlayerData -> Game.Step.SteppedPlayer in
                     let ref: DocumentReference? = steppedPlayerData[FieldsKeys.ref.rawValue] as? DocumentReference
                     let refPath: String = ref?.path ?? .empty
@@ -316,9 +312,12 @@ final class FirestoreService {
                     return Game.Step.SteppedPlayer(ref: refPath, card: card)
                 }
                 let currentStep = Game.Step(index: index, steppedPlayers: steppedPlayers)
+
+                let sortedPlayers = players.sorted(by: { $0.playerRef < $1.playerRef })
+
                 let game = Game(
                     id: snapshot.documentID,
-                    players: players,
+                    players: sortedPlayers,
                     situations: situations,
                     currentStep: currentStep
                 )
@@ -336,8 +335,7 @@ final class FirestoreService {
         db.runTransaction { [weak self] transaction, _ in
             guard let document = try? transaction.getDocument(currentGameRef),
                   let documentData = document.data(),
-                  let playersData = documentData[FieldsKeys.players.rawValue] as? [[String: Any]],
-                  let currentStepData = documentData[FieldsKeys.currentStep.rawValue] as? [String: Any] else { return nil }
+                  let playersData = documentData[FieldsKeys.players.rawValue] as? [[String: Any]] else { return nil }
 
             guard playersData.count > 1 else {
                 self?.removeGame(withId: gameId, handler: handler)
@@ -348,7 +346,7 @@ final class FirestoreService {
                 let playerId = ref?.documentID ?? .empty
                 return playerId == userId
             }
-            let steppedPlayersData: [[String: Any]] = currentStepData[FieldsKeys.steppedPlayers.rawValue] as? [[String: Any]] ?? []
+            let steppedPlayersData: [[String: Any]] = documentData[FieldsKeys.steppedPlayers.rawValue] as? [[String: Any]] ?? []
             let steppedPlayerToRemove = steppedPlayersData.first { steppedPlayerData -> Bool in
                 let ref = steppedPlayerData[FieldsKeys.ref.rawValue] as? DocumentReference
                 let playerId = ref?.documentID ?? .empty
@@ -363,9 +361,7 @@ final class FirestoreService {
 
             if let steppedPlayerToRemove = steppedPlayerToRemove {
                 let steppedPlayersNewData = [
-                    FieldsKeys.currentStep.rawValue: [
-                        FieldsKeys.steppedPlayers.rawValue: FieldValue.arrayRemove([steppedPlayerToRemove])
-                    ]
+                    FieldsKeys.steppedPlayers.rawValue: FieldValue.arrayRemove([steppedPlayerToRemove])
                 ]
                 transaction.updateData(steppedPlayersNewData, forDocument: currentGameRef)
             }
@@ -422,6 +418,49 @@ final class FirestoreService {
         }
         enterInLobbie(lobbieId: lastLobbieId)
     }
+
+
+    func makeStep(
+        gameId: String,
+        card: String,
+        handler: (() -> Void)?
+    ) {
+        guard let userId = UserService.shared.getUserId() else { return }
+        let currentGameRef = db
+            .collection(CollectionsKeys.games.rawValue)
+            .document(gameId)
+        let currentPlayerRef = db.collection(CollectionsKeys.players.rawValue).document(userId)
+
+        db.runTransaction { transaction, _ in
+            guard let document = try? transaction.getDocument(currentGameRef),
+                  let documentData = document.data(),
+                  let playersData = documentData[FieldsKeys.players.rawValue] as? [[String: Any]] else { return nil }
+            let steppedPlayersData = documentData[FieldsKeys.steppedPlayers.rawValue] as? [[String: Any]] ?? []
+            guard !steppedPlayersData.compactMap({ ($0[FieldsKeys.ref.rawValue] as? DocumentReference)?.documentID }).contains(userId) else { return nil }
+
+            let newSteppedPlayer: [String: Any] = [
+                FieldsKeys.ref.rawValue: currentPlayerRef,
+                FieldsKeys.card.rawValue: card
+            ]
+
+            let newData: [String: Any] = [
+                FieldsKeys.steppedPlayers.rawValue: FieldValue.arrayUnion([newSteppedPlayer])
+            ]
+            let newDataIncrement: [String: Any] = [
+                FieldsKeys.index.rawValue: FieldValue.increment(Int64(1))
+            ]
+
+            let shouldIncrementIndex = playersData.count - 1 == steppedPlayersData.count
+            transaction.updateData(newData, forDocument: currentGameRef)
+            if shouldIncrementIndex {
+                transaction.updateData(newDataIncrement, forDocument: currentGameRef)
+            }
+            return nil
+        } completion: { _, _ in
+            handler?()
+        }
+
+    }
 }
 
 
@@ -474,7 +513,7 @@ fileprivate enum FieldsKeys: String {
     case ref
     case steppedPlayers
     case card
-    case index
+    case index = "currentStepIndex"
     case currentStep
     case gameId
 }
