@@ -106,84 +106,90 @@ final class FirestoreService {
     }
 
     func toggleReady(inLobbie lobbieId: String, _ handler: @escaping () -> Void) {
-        db.collection(CollectionsKeys.lobbies.rawValue).document(lobbieId).getDocument { [weak self] snapshot, error in
-            guard let strongSelf = self, let snapshot = snapshot, let data = snapshot.data() else {
-                handler()
-                return
-            }
-            var readyMembers = data[FieldsKeys.readyMembers.rawValue] as? [DocumentReference] ?? []
-            let readyMembersIds = readyMembers.map(\.documentID)
-            guard let userId = UserService.shared.getUserId() else {
-                handler()
-                return
-            }
-            if let index = readyMembersIds.firstIndex(of: userId) {
-                readyMembers.remove(at: index)
-                snapshot.reference.setData([FieldsKeys.readyMembers.rawValue: readyMembers], mergeFields: [FieldsKeys.readyMembers.rawValue])
+        guard let userId = UserService.shared.getUserId() else {
+            handler()
+            return
+        }
+        let currentLobbieRef = db
+            .collection(CollectionsKeys.lobbies.rawValue)
+            .document(lobbieId)
+
+        db.runTransaction { [weak self] transaction, _ in
+            guard let strongSelf = self,
+                  let document = try? transaction.getDocument(currentLobbieRef),
+                  let documentData = document.data() else { return nil }
+            let readyMembers = documentData[FieldsKeys.readyMembers.rawValue] as? [DocumentReference] ?? []
+            if let memberToRemove = readyMembers.first(where: { $0.documentID == userId }) {
+                transaction.updateData([FieldsKeys.readyMembers.rawValue: FieldValue.arrayRemove([memberToRemove])], forDocument: currentLobbieRef)
             } else {
                 let currentPlayerRef = strongSelf.db.collection(CollectionsKeys.players.rawValue).document(userId)
-                readyMembers.append(currentPlayerRef)
-                snapshot.reference.setData([FieldsKeys.readyMembers.rawValue: readyMembers], mergeFields: [FieldsKeys.readyMembers.rawValue])
+                transaction.updateData([FieldsKeys.readyMembers.rawValue: FieldValue.arrayUnion([currentPlayerRef])], forDocument: currentLobbieRef)
             }
+            return nil
+        } completion: { _, _ in
             handler()
         }
     }
 
     func quitFromLobbie(saveLastLobbie: Bool = false, _ handler: (() -> Void)? = nil) {
-        guard let lobbieId = currentLobbieId else { return }
-        db.collection(CollectionsKeys.lobbies.rawValue).document(lobbieId).getDocument { [weak self] snapshot, error in
-            guard let strongSelf = self, let snapshot = snapshot, let userId = UserService.shared.getUserId() else {
-                handler?()
-                return
-            }
-            let members = snapshot.get(FieldsKeys.members.rawValue) as? [DocumentReference] ?? []
-            let readyMembers = snapshot.get(FieldsKeys.readyMembers.rawValue) as? [DocumentReference] ?? []
-            let currentPlayerRef = strongSelf.db.collection(CollectionsKeys.players.rawValue).document(userId)
-            if let memberToRemove = members.first(where: { $0 == currentPlayerRef }) {
-                strongSelf.db.runTransaction { transaction, errorPointer in
-                    do {
-                        let document = try transaction.getDocument(snapshot.reference)
-                        let documentData = document.data() ?? [:]
-                        let members: [DocumentReference] = documentData.contains(where: { $0.key == FieldsKeys.members.rawValue }) ? documentData[FieldsKeys.members.rawValue] as? [DocumentReference] ?? [] : []
-                        if members.count == 1 {
-                            transaction.deleteDocument(snapshot.reference)
-                        } else {
-                            transaction.updateData([FieldsKeys.members.rawValue: FieldValue.arrayRemove([memberToRemove])], forDocument: snapshot.reference)
-                            if let memberToRemove = readyMembers.first(where: { $0 == currentPlayerRef }) {
-                                transaction.updateData([FieldsKeys.readyMembers.rawValue: FieldValue.arrayRemove([memberToRemove])], forDocument: snapshot.reference)
-                            }
-                        }
-                    } catch {
-                        print(error)
-                    }
-                    return nil
-                } completion: { _, _ in
-                    handler?()
+        guard let userId = UserService.shared.getUserId(),
+              let lobbieId = currentLobbieId else {
+            handler?()
+            return
+        }
+        let currentLobbieRef = db
+            .collection(CollectionsKeys.lobbies.rawValue)
+            .document(lobbieId)
+        let currentPlayerRef = db.collection(CollectionsKeys.players.rawValue).document(userId)
+
+        db.runTransaction { transaction, _ in
+            guard let document = try? transaction.getDocument(currentLobbieRef) else { return nil }
+            let members = document.get(FieldsKeys.members.rawValue) as? [DocumentReference] ?? []
+            let readyMembers = document.get(FieldsKeys.readyMembers.rawValue) as? [DocumentReference] ?? []
+
+            guard let memberToRemove = members.first(where: { $0 == currentPlayerRef }) else { return nil  }
+            if members.count == 1 {
+                transaction.deleteDocument(currentLobbieRef)
+            } else {
+                transaction.updateData([FieldsKeys.members.rawValue: FieldValue.arrayRemove([memberToRemove])], forDocument: currentLobbieRef)
+                if let memberToRemove = readyMembers.first(where: { $0 == currentPlayerRef }) {
+                    transaction.updateData([FieldsKeys.readyMembers.rawValue: FieldValue.arrayRemove([memberToRemove])], forDocument: currentLobbieRef)
                 }
             }
-            strongSelf.currentLobbieId = nil
-            strongSelf.lastLobbieId = saveLastLobbie ? lobbieId : nil
+
+            return nil
+        } completion: { [weak self] _, _ in
+            self?.currentLobbieId = nil
+            self?.lastLobbieId = saveLastLobbie ? lobbieId : nil
+            handler?()
         }
     }
 
     func enterInLobbie(lobbieId: String, _ handler: (() -> Void)? = nil) {
-        db.collection(CollectionsKeys.lobbies.rawValue).document(lobbieId).getDocument { [weak self] snapshot, error in
-            guard let strongSelf = self, let snapshot = snapshot, snapshot.exists, let userId = UserService.shared.getUserId() else {
-                handler?()
-                return
-            }
-            var members = snapshot.get(FieldsKeys.members.rawValue) as? [DocumentReference] ?? []
-            var readyMembers = snapshot.get(FieldsKeys.readyMembers.rawValue) as? [DocumentReference] ?? []
-            let currentPlayerRef = strongSelf.db.collection(CollectionsKeys.players.rawValue).document(userId)
+        guard let userId = UserService.shared.getUserId() else { return }
+        let currentPlayerRef = db.collection(CollectionsKeys.players.rawValue).document(userId)
+
+        let currentLobbieRef = db
+            .collection(CollectionsKeys.lobbies.rawValue)
+            .document(lobbieId)
+
+        db.runTransaction { transaction, _ in
+            guard let document = try? transaction.getDocument(currentLobbieRef), document.exists else { return nil }
+
+            let members = document.get(FieldsKeys.members.rawValue) as? [DocumentReference] ?? []
+            let readyMembers = document.get(FieldsKeys.readyMembers.rawValue) as? [DocumentReference] ?? []
+
             if !members.contains(currentPlayerRef) {
-                members.append(currentPlayerRef)
-                snapshot.reference.setData([FieldsKeys.members.rawValue: members], mergeFields: [FieldsKeys.members.rawValue], completion: { _ in handler?() })
+                transaction.updateData([FieldsKeys.members.rawValue: FieldValue.arrayUnion([currentPlayerRef])], forDocument: currentLobbieRef)
             }
             if readyMembers.contains(currentPlayerRef) {
-                readyMembers.removeAll(where: { $0 == currentPlayerRef })
-                snapshot.reference.setData([FieldsKeys.readyMembers.rawValue: readyMembers], mergeFields: [FieldsKeys.readyMembers.rawValue], completion: { _ in handler?() })
+                transaction.updateData([FieldsKeys.readyMembers.rawValue: FieldValue.arrayRemove([currentPlayerRef])], forDocument: currentLobbieRef)
             }
-            strongSelf.currentLobbieId = lobbieId
+
+            return nil
+        } completion: { [weak self] _, _ in
+            self?.currentLobbieId = lobbieId
+            handler?()
         }
     }
 
@@ -322,86 +328,92 @@ final class FirestoreService {
     }
 
     func quitFromGame(withId gameId: String, _ handler: @escaping (Bool) -> Void) {
-        db
+        let userId = UserService.shared.getUserId()
+        let currentGameRef = db
             .collection(CollectionsKeys.games.rawValue)
             .document(gameId)
-            .getDocument { [weak self] snapshot, error in
-                guard let strongSelf = self,
-                      let snapshotData = snapshot?.data(),
-                      var playersData = snapshotData[FieldsKeys.players.rawValue] as? [[String: Any]],
-                      var currentStepData = snapshotData[FieldsKeys.currentStep.rawValue] as? [String: Any] else {
-                    handler(false)
-                    return
-                }
 
-                let userId = UserService.shared.getUserId() ?? .empty
-                playersData.removeAll { playerData -> Bool in
-                    let ref = playerData[FieldsKeys.ref.rawValue] as? DocumentReference
-                    let playerId = ref?.documentID ?? .empty
-                    return playerId == userId
-                }
-                var steppedPlayersData: [[String: Any]] = currentStepData[FieldsKeys.steppedPlayers.rawValue] as? [[String: Any]] ?? []
-                steppedPlayersData.removeAll { steppedPlayerData -> Bool in
-                    let ref = steppedPlayerData[FieldsKeys.ref.rawValue] as? DocumentReference
-                    let playerId = ref?.documentID ?? .empty
-                    return playerId == userId
-                }
-                currentStepData[FieldsKeys.steppedPlayers.rawValue] = steppedPlayersData
+        db.runTransaction { [weak self] transaction, _ in
+            guard let document = try? transaction.getDocument(currentGameRef),
+                  let documentData = document.data(),
+                  let playersData = documentData[FieldsKeys.players.rawValue] as? [[String: Any]],
+                  let currentStepData = documentData[FieldsKeys.currentStep.rawValue] as? [String: Any] else { return nil }
 
-                let newData: [String: Any] = [
-                    FieldsKeys.players.rawValue: playersData,
-                    FieldsKeys.currentStep.rawValue: currentStepData
-                ]
-                snapshot?.reference.setData(
-                    newData,
-                    mergeFields: [
-                        FieldsKeys.players.rawValue,
-                        FieldsKeys.currentStep.rawValue
-                    ],
-                    completion: { error in
-                        if error == nil {
-                            strongSelf.currentGameId = nil
-                            if playersData.isEmpty {
-                                strongSelf.removeGame(withId: gameId, handler: handler)
-                            } else {
-                                handler(true)
-                            }
-                        } else {
-                            handler(false)
-                        }
-                    }
-                )
+            guard playersData.count > 1 else {
+                self?.removeGame(withId: gameId, handler: handler)
+                return nil
             }
+            let playerToRemove = playersData.first { playerData -> Bool in
+                let ref = playerData[FieldsKeys.ref.rawValue] as? DocumentReference
+                let playerId = ref?.documentID ?? .empty
+                return playerId == userId
+            }
+            let steppedPlayersData: [[String: Any]] = currentStepData[FieldsKeys.steppedPlayers.rawValue] as? [[String: Any]] ?? []
+            let steppedPlayerToRemove = steppedPlayersData.first { steppedPlayerData -> Bool in
+                let ref = steppedPlayerData[FieldsKeys.ref.rawValue] as? DocumentReference
+                let playerId = ref?.documentID ?? .empty
+                return playerId == userId
+            }
+
+            guard let playerToRemove = playerToRemove else { return nil }
+            let playersNewData = [
+                FieldsKeys.players.rawValue: FieldValue.arrayRemove([playerToRemove])
+            ]
+            transaction.updateData(playersNewData, forDocument: currentGameRef)
+
+            if let steppedPlayerToRemove = steppedPlayerToRemove {
+                let steppedPlayersNewData = [
+                    FieldsKeys.currentStep.rawValue: [
+                        FieldsKeys.steppedPlayers.rawValue: FieldValue.arrayRemove([steppedPlayerToRemove])
+                    ]
+                ]
+                transaction.updateData(steppedPlayersNewData, forDocument: currentGameRef)
+            }
+
+            return nil
+        } completion: { [weak self] transaction, pointer in
+            if pointer == nil {
+                self?.currentGameId = nil
+                handler(true)
+            } else {
+                handler(false)
+            }
+        }
     }
 
     func setOnlineInCurrentGame(_ isOnline: Bool) {
-        guard let currentGameId = currentGameId else { return }
+        guard let currentGameId = currentGameId,
+              let userId = UserService.shared.getUserId() else { return }
 
         let currentGameRef = db
             .collection(CollectionsKeys.games.rawValue)
             .document(currentGameId)
 
-        currentGameRef.getDocument { snapshot, error in
-            guard let snapshotData = snapshot?.data() else { return }
-            guard var players = snapshotData[FieldsKeys.players.rawValue] as? [[String: Any]] else { return }
-            guard let userId = UserService.shared.getUserId() else { return }
-
-            let currentPlayerIndex = players.firstIndex { playerData -> Bool in
-                let playerRef = playerData[FieldsKeys.ref.rawValue] as? DocumentReference
+        db.runTransaction { transaction, _ in
+            guard let document =  try? transaction.getDocument(currentGameRef),
+                  let documentData = document.data(),
+                  let oldPlayers = documentData[FieldsKeys.players.rawValue] as? [[String: Any]] else { return nil }
+            let currentPlayerIndex = oldPlayers.firstIndex { oldPlayerData -> Bool in
+                let playerRef = oldPlayerData[FieldsKeys.ref.rawValue] as? DocumentReference
                 guard let playerId = playerRef?.documentID else { return false }
                 return playerId == userId
             }
-            guard let currentPlayerIndex = currentPlayerIndex else { return }
 
-            var currentPlayer = players[currentPlayerIndex]
-            currentPlayer[FieldsKeys.isOnline.rawValue] = isOnline
-            players[currentPlayerIndex] = currentPlayer
+            guard let currentPlayerIndex = currentPlayerIndex else { return nil }
+            let oldPlayer = oldPlayers[currentPlayerIndex]
+            var newPlayer = oldPlayer
+            newPlayer[FieldsKeys.isOnline.rawValue] = isOnline
 
-            let newData: [String: Any] = [
-                FieldsKeys.players.rawValue: players
-            ]
-            snapshot?.reference.setData(newData, mergeFields: [FieldsKeys.players.rawValue])
-        }
+            transaction.updateData([
+                FieldsKeys.players.rawValue: FieldValue.arrayRemove([oldPlayer])
+            ], forDocument: currentGameRef)
+            transaction.updateData([
+                FieldsKeys.players.rawValue: FieldValue.arrayUnion([newPlayer])
+            ], forDocument: currentGameRef)
+
+            return nil
+        } completion: { _, _ in }
+
     }
 
     func enterLastLobbie() {
