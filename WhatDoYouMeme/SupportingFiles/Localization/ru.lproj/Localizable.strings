@@ -32,6 +32,7 @@ createGame.createButtonTitle = "Создать";
 game.closeAlertMessage = "Вы уверены, что хотите покинуть игру?";
 game.closeAlertOkAction = "Да";
 game.closeAlertCancelAction = "Нет";
+game.sendCard = "Сделать ход";
 
 errorAlertDefault.title = "Ошибка";
 errorAlertDefault.message = "Что-то пошло не так...";

@@ -39,4 +39,11 @@ extension Game {
             .first(where: { $0.playerRef.components(separatedBy: "/")[1] == myId })
             .map(\.hand) ?? []
     }
+
+    func getMySentCard() -> String? {
+        guard let myId = UserService.shared.getUserId() else { return nil }
+        return currentStep.steppedPlayers
+            .first(where: { $0.ref.components(separatedBy: "/")[1] == myId })?
+            .card
+    }
 }

@@ -233,7 +233,7 @@ final class FirestoreService {
                         var takenMemesIndexes: [Int] = []
                         for playersRef in playersRefs {
                             var hand: [String] = []
-                            while hand.count < 2 {
+                            while hand.count < 3 {
                                 let memeIndex = Int.random(in: 0..<allMemes.count)
                                 if takenMemesIndexes.contains(memeIndex) { continue }
                                 let newMeme = allMemes[memeIndex]
@@ -450,11 +450,25 @@ final class FirestoreService {
                 FieldsKeys.index.rawValue: FieldValue.increment(Int64(1))
             ]
 
+            guard let oldPlayerData = playersData.first(where: { ($0[FieldsKeys.ref.rawValue] as? DocumentReference) == currentPlayerRef }) else { return nil }
+            let oldHand = oldPlayerData[FieldsKeys.hand.rawValue] as? [String] ?? []
+            var newPlayerData = oldPlayerData
+            var newHand = oldHand
+            newHand.removeAll(where: { $0 == card })
+            newPlayerData[FieldsKeys.hand.rawValue] = newHand
+
             let shouldIncrementIndex = playersData.count - 1 == steppedPlayersData.count
             transaction.updateData(newData, forDocument: currentGameRef)
             if shouldIncrementIndex {
                 transaction.updateData(newDataIncrement, forDocument: currentGameRef)
             }
+
+            transaction.updateData([
+                FieldsKeys.players.rawValue: FieldValue.arrayRemove([oldPlayerData])
+            ], forDocument: currentGameRef)
+            transaction.updateData([
+                FieldsKeys.players.rawValue: FieldValue.arrayUnion([newPlayerData])
+            ], forDocument: currentGameRef)
             return nil
         } completion: { _, _ in
             handler?()

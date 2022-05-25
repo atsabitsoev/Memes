@@ -41,6 +41,8 @@ enum LocalizedString {
         static var closeAlertMessage: String { "game.closeAlertMessage".localized() }
         static var closeAlertOkAction: String { "game.closeAlertOkAction".localized() }
         static var closeAlertCancelAction: String { "game.closeAlertCancelAction".localized() }
+
+        static var sendCard: String { "game.sendCard".localized() }
     }
     enum ErrorAlertDefault {
         static var title: String { "errorAlertDefault.title".localized() }

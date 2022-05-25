@@ -13,8 +13,9 @@ final class GameController: UIViewController {
 
 
     private let gameId: String
-    private var game: Game! {
+    private var game: Game? {
         didSet {
+            guard let game = game else { return }
             onGameUpdate(game)
         }
     }
@@ -44,7 +45,6 @@ final class GameController: UIViewController {
 
     override func onCloseTap() {
         closeAlert()
-        interactor.makeStep(gameId: gameId, card: game.getMyHand()[0], handler: nil)
     }
 }
 
@@ -58,16 +58,36 @@ private extension GameController {
                 self?.dismiss(animated: true)
                 return
             }
+            if let oldGame = strongSelf.game, oldGame.currentStep.index < game.currentStep.index {
+                strongSelf.showStepResults(
+                    steppedPlayers: game.currentStep.steppedPlayers,
+                    situation: oldGame.situations[oldGame.currentStep.index]
+                )
+            }
             strongSelf.game = game
         }
     }
 
     func onGameUpdate(_ game: Game) {
         gameView.setGame(game)
+        gameView.setOnCardConfigmedHandler { [weak self] selectedCard in
+            self?.makeStep(card: selectedCard)
+        }
     }
 
     func quitFromGame(_ handler: @escaping (Bool) -> Void) {
         interactor.quitGame(withId: gameId, handler)
+    }
+
+    func makeStep(card: String) {
+        interactor.makeStep(gameId: gameId, card: card, handler: nil)
+    }
+
+    func showStepResults(
+        steppedPlayers: [Game.Step.SteppedPlayer],
+        situation: String
+    ) {
+        print("Показать экран, демонстрирующий результаты хода")
     }
 
     func closeAlert() {

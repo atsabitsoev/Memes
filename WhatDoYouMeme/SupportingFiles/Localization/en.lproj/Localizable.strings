@@ -32,6 +32,7 @@ createGame.createButtonTitle = "Create";
 game.closeAlertMessage = "Are you sure you want to leave the game?";
 game.closeAlertOkAction = "Yes";
 game.closeAlertCancelAction = "No";
+game.sendCard = "Confirm";
 
 errorAlertDefault.title = "Error";
 errorAlertDefault.message = "Something went wrong...";

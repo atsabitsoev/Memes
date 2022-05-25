@@ -26,6 +26,8 @@ extension UIColor {
     static let lobbieInfoReadyCellTextColor: UIColor = UIColor.white
     static let lobbieInfoNotReadyCellTextColor: UIColor = UIColor.label
 
-    static let cardBackground: UIColor = UIColor.systemBackground
+    static let cardNormalBackground: UIColor = UIColor.systemBackground
+    static let cardSelectedBackground: UIColor = UIColor.systemBlue
+    static let cardSentBackground: UIColor = UIColor.systemGreen
     static let cardPlaceholder: UIColor = UIColor.lightGray
 }

@@ -41,7 +41,11 @@ final class GameView: UIView {
     func setGame(_ game: Game) {
         let currentStepIndex = game.currentStep.index
         situationLabel.text = game.situations[currentStepIndex]
-        handView.update(cardsLinks: game.getMyHand())
+        handView.update(cardsLinks: game.getMyHand(), sentCard: game.getMySentCard())
+    }
+
+    func setOnCardConfigmedHandler(_ handler: @escaping (String) -> Void) {
+        handView.setOnCardConfirmedHandler(handler)
     }
 }
 
@@ -73,7 +77,7 @@ private extension GameView {
             handView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
             handView.leftAnchor.constraint(equalTo: leftAnchor),
             handView.rightAnchor.constraint(equalTo: rightAnchor),
-            handView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.5)
+            handView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.3)
         ])
     }
 }

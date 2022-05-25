@@ -10,6 +10,7 @@ import UIKit
 final class HandView: UIScrollView {
     private enum Constants {
         static let stackSpacing: CGFloat = 4
+        static let stackSpacingAfterSentCardView: CGFloat = 8
         static let stackHeightInset: CGFloat = 1
     }
 
@@ -22,15 +23,15 @@ final class HandView: UIScrollView {
     }(UIStackView())
 
 
-    private var cardsLinks: [String] {
-        didSet {
-            updateCards()
-        }
-    }
+    private var cardsLinks: [String]
+    private var sentCard: String?
+
+    private var onCardConfirmedHandler: ((String) -> Void)?
 
 
-    init(cardsLinks: [String] = []) {
+    init(cardsLinks: [String] = [], sentCard: String? = nil) {
         self.cardsLinks = cardsLinks
+        self.sentCard = sentCard
         super.init(frame: .zero)
         setupView()
     }
@@ -45,8 +46,14 @@ final class HandView: UIScrollView {
     }
 
 
-    func update(cardsLinks: [String]) {
+    func update(cardsLinks: [String], sentCard: String? = nil) {
         self.cardsLinks = cardsLinks
+        self.sentCard = sentCard
+        updateCards()
+    }
+
+    func setOnCardConfirmedHandler(_ handler: @escaping (String) -> Void) {
+        onCardConfirmedHandler = handler
     }
 }
 
@@ -70,8 +77,44 @@ private extension HandView {
 
     func updateCards() {
         stackView.removeAllArrangedSubviews()
-        let cardViews: [UIView] = cardsLinks.map(CardView.init)
+
+        let cardViews: [UIView] = cardsLinks.map({
+            let currentLink = $0
+            let cardView = CardView(imageLink: currentLink)
+            cardView.setOnSelectHandler { [weak self] in
+                self?.resetAllCards(besides: cardView)
+            }
+            cardView.setOnLoadingHandler { [weak self] in
+                self?.onCardConfirmedHandler?(currentLink)
+                self?.blockAllCards()
+            }
+            return cardView
+        })
         stackView.addArrangedSubviews(cardViews)
+
+        if let sentCard = sentCard {
+            let sentCardView = CardView(imageLink: sentCard, state: .sent)
+            stackView.insertArrangedSubview(sentCardView, at: .zero)
+            stackView.setCustomSpacing(Constants.stackSpacingAfterSentCardView, after: sentCardView)
+            blockAllCards()
+        }
+    }
+
+    func resetAllCards(besides selectedCard: CardView) {
+        stackView.arrangedSubviews
+            .compactMap({ $0 as? CardView })
+            .filter({ $0 != selectedCard })
+            .forEach { card in
+                card.resetState()
+            }
+    }
+
+    func blockAllCards() {
+        stackView.arrangedSubviews
+            .compactMap({ $0 as? CardView })
+            .forEach { card in
+                card.blockCard()
+            }
     }
 }
 
