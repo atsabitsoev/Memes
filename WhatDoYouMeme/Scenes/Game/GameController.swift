@@ -10,6 +10,7 @@ import UIKit
 final class GameController: UIViewController {
     private var gameView: GameView!
     private let interactor: GameInteractor
+    private let coordinator: GameCoordinator
 
 
     private let gameId: String
@@ -21,9 +22,14 @@ final class GameController: UIViewController {
     }
 
 
-    init(interactor: GameInteractor, gameId: String) {
+    init(
+        interactor: GameInteractor,
+        coordinator: GameCoordinator,
+        gameId: String
+    ) {
         self.gameId = gameId
         self.interactor = interactor
+        self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -87,7 +93,11 @@ private extension GameController {
         steppedPlayers: [Game.Step.SteppedPlayer],
         situation: String
     ) {
-        print("Показать экран, демонстрирующий результаты хода")
+        coordinator.showStepResultsVC(
+            situation: situation,
+            steppedPlayers: steppedPlayers,
+            fromVC: self
+        )
     }
 
     func closeAlert() {

@@ -315,11 +315,27 @@ final class FirestoreService {
 
                 let sortedPlayers = players.sorted(by: { $0.playerRef < $1.playerRef })
 
+                let marksKeysValues = snapshotData
+                    .filter({ $0.key.contains(FieldsKeys.marks.rawValue) })
+                    .map { elem -> (key: String, value: [Game.Mark]) in
+                        let playerId = elem.key.components(separatedBy: "_")[1]
+                        let playerMarksData = elem.value as? [[String: Any]] ?? []
+                        let playerMarks = playerMarksData.map({ playerMarkData -> Game.Mark in
+                            let player: String = (playerMarkData[FieldsKeys.player.rawValue] as? DocumentReference)?.documentID ?? .empty
+                            let liked: Bool = playerMarkData[FieldsKeys.liked.rawValue] as? Bool ?? false
+                            let card: String = playerMarkData[FieldsKeys.card.rawValue] as? String ?? .empty
+                            return Game.Mark(player: player, liked: liked, card: card)
+                        })
+                        return (key: playerId, value: playerMarks)
+                    }
+                let marks = Dictionary(uniqueKeysWithValues: marksKeysValues)
+
                 let game = Game(
                     id: snapshot.documentID,
                     players: sortedPlayers,
                     situations: situations,
-                    currentStep: currentStep
+                    currentStep: currentStep,
+                    marks: marks
                 )
                 strongSelf.currentGameId = game.id
                 handler(game)
@@ -473,7 +489,42 @@ final class FirestoreService {
         } completion: { _, _ in
             handler?()
         }
+    }
 
+
+    func setMark(toCard card: String, liked: Bool) {
+        guard let currentGameId = currentGameId,
+              let userId = UserService.shared.getUserId() else { return }
+        let currentGameRef = db
+            .collection(CollectionsKeys.games.rawValue)
+            .document(currentGameId)
+        let currentPlayerRef = db
+            .collection(CollectionsKeys.players.rawValue)
+            .document(userId)
+
+        db.runTransaction { transaction, _ in
+            guard let gameDocument = try? transaction.getDocument(currentGameRef),
+            let gameData = gameDocument.data() else { return nil }
+
+            let newMark: [String: Any] = [
+                FieldsKeys.card.rawValue: card,
+                FieldsKeys.player.rawValue: currentPlayerRef,
+                FieldsKeys.liked.rawValue: liked
+            ]
+
+            let myMarksKey = FieldsKeys.marks.rawValue + userId
+            if let myMarks = gameData[myMarksKey] as? [[String: Any]] {
+                if let markToRemove = myMarks
+                    .compactMap({ $0[FieldsKeys.card.rawValue] as? String })
+                    .first(where: { $0 == card }) {
+                    transaction.updateData([myMarksKey: FieldValue.arrayRemove([markToRemove])], forDocument: currentGameRef)
+                }
+                transaction.updateData([myMarksKey: FieldValue.arrayUnion([newMark])], forDocument: currentGameRef)
+            } else {
+                transaction.setData([myMarksKey: [newMark]], forDocument: currentGameRef)
+            }
+            return nil
+        } completion: { _, _ in }
     }
 }
 
@@ -521,6 +572,7 @@ fileprivate enum FieldsKeys: String {
     case readyMembers
     case situations
     case memes
+    case player
     case players
     case hand
     case isOnline
@@ -530,4 +582,6 @@ fileprivate enum FieldsKeys: String {
     case index = "currentStepIndex"
     case currentStep
     case gameId
+    case marks = "marks_"
+    case liked
 }

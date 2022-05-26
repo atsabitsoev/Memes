@@ -63,6 +63,10 @@
 		2DB7ED29282D8CB800D015F7 /* CreateGameCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB7ED28282D8CB800D015F7 /* CreateGameCoordinator.swift */; };
 		2DB7ED2B282D984100D015F7 /* LobbiesListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB7ED2A282D984100D015F7 /* LobbiesListCoordinator.swift */; };
 		2DB7ED2D282D995400D015F7 /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB7ED2C282D995400D015F7 /* UITableView+Extension.swift */; };
+		2DC37583283FAE7400E00F24 /* StepResultsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC37582283FAE7400E00F24 /* StepResultsController.swift */; };
+		2DC37585283FAECF00E00F24 /* StepResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC37584283FAECF00E00F24 /* StepResultsView.swift */; };
+		2DC37587283FAFF500E00F24 /* StepResultsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC37586283FAFF500E00F24 /* StepResultsInteractor.swift */; };
+		2DC37589283FB22300E00F24 /* GameCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC37588283FB22300E00F24 /* GameCoordinator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -120,6 +124,10 @@
 		2DB7ED28282D8CB800D015F7 /* CreateGameCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGameCoordinator.swift; sourceTree = "<group>"; };
 		2DB7ED2A282D984100D015F7 /* LobbiesListCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbiesListCoordinator.swift; sourceTree = "<group>"; };
 		2DB7ED2C282D995400D015F7 /* UITableView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extension.swift"; sourceTree = "<group>"; };
+		2DC37582283FAE7400E00F24 /* StepResultsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepResultsController.swift; sourceTree = "<group>"; };
+		2DC37584283FAECF00E00F24 /* StepResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepResultsView.swift; sourceTree = "<group>"; };
+		2DC37586283FAFF500E00F24 /* StepResultsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepResultsInteractor.swift; sourceTree = "<group>"; };
+		2DC37588283FB22300E00F24 /* GameCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCoordinator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,6 +152,7 @@
 			children = (
 				2D6FFF042838FE9900ADF7FE /* Views */,
 				2D5B294F282EE7CC000E37FC /* GameController.swift */,
+				2DC37588283FB22300E00F24 /* GameCoordinator.swift */,
 				2DA1541528394C0500808671 /* GameInteractor.swift */,
 				2D5B2951282EE816000E37FC /* GameView.swift */,
 			);
@@ -276,6 +285,7 @@
 		2D9E37C0282BD0B500CC54C5 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				2DC37581283FAE6000E00F24 /* StepResults */,
 				2D5B2956282EE96D000E37FC /* Game */,
 				2DB7ED23282D8A2500D015F7 /* LobbieInfo */,
 				2D9E37D2282C0E1200CC54C5 /* CreateGame */,
@@ -347,6 +357,16 @@
 				2D5B294D282E3105000E37FC /* LobbieInfoCell.swift */,
 			);
 			path = LobbieInfo;
+			sourceTree = "<group>";
+		};
+		2DC37581283FAE6000E00F24 /* StepResults */ = {
+			isa = PBXGroup;
+			children = (
+				2DC37582283FAE7400E00F24 /* StepResultsController.swift */,
+				2DC37584283FAECF00E00F24 /* StepResultsView.swift */,
+				2DC37586283FAFF500E00F24 /* StepResultsInteractor.swift */,
+			);
+			path = StepResults;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -443,6 +463,7 @@
 				2D9E37B4282BC69700CC54C5 /* String+Extension.swift in Sources */,
 				2D6FFF0A2839001800ADF7FE /* CardView.swift in Sources */,
 				2D9E37C3282C029A00CC54C5 /* SettingsController.swift in Sources */,
+				2DC37585283FAECF00E00F24 /* StepResultsView.swift in Sources */,
 				2D9E37B6282BC9C700CC54C5 /* UIBarButton+Extension.swift in Sources */,
 				2D5B294E282E3105000E37FC /* LobbieInfoCell.swift in Sources */,
 				2D800E64282D4D4800D6FA37 /* MemesTextfield.swift in Sources */,
@@ -453,6 +474,7 @@
 				2DA91A22282C399B0081686A /* Player.swift in Sources */,
 				2DB7ED20282D862D00D015F7 /* CreateGameInteractor.swift in Sources */,
 				2D6FFF062838FEBE00ADF7FE /* SituationLabel.swift in Sources */,
+				2DC37589283FB22300E00F24 /* GameCoordinator.swift in Sources */,
 				2D9E3789282BBF6300CC54C5 /* AppDelegate.swift in Sources */,
 				2D9E37B9282BCC5000CC54C5 /* MemesButton.swift in Sources */,
 				2D4CA7BC282D6A8D0047B959 /* KeyboardNotificationsObserver.swift in Sources */,
@@ -479,7 +501,9 @@
 				2D5B2954282EE8F8000E37FC /* LobbieInfoCoordinator.swift in Sources */,
 				2DA15418283953AD00808671 /* AppCoordinator.swift in Sources */,
 				2D9E37A4282BC13A00CC54C5 /* UIColor+Extension.swift in Sources */,
+				2DC37583283FAE7400E00F24 /* StepResultsController.swift in Sources */,
 				2D9E37D1282C0A3000CC54C5 /* LobbiesListView.swift in Sources */,
+				2DC37587283FAFF500E00F24 /* StepResultsInteractor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

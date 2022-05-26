@@ -34,6 +34,9 @@ game.closeAlertOkAction = "Yes";
 game.closeAlertCancelAction = "No";
 game.sendCard = "Confirm";
 
+stepResults.title = "Results";
+stepResults.nextButtonTitle = "Continue";
+
 errorAlertDefault.title = "Error";
 errorAlertDefault.message = "Something went wrong...";
 errorAlertDefault.okAction = "Ok";

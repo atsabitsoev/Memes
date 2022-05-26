@@ -25,10 +25,17 @@ struct Game {
         let playerRef: String
     }
 
+    struct Mark {
+        let player: String
+        let liked: Bool
+        let card: String
+    }
+
     let id: String
     let players: [Player]
     let situations: [String]
     let currentStep: Step
+    let marks: [String: [Mark]]
 }
 
 

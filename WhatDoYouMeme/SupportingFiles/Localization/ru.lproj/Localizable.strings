@@ -34,6 +34,9 @@ game.closeAlertOkAction = "Да";
 game.closeAlertCancelAction = "Нет";
 game.sendCard = "Сделать ход";
 
+stepResults.title = "Результаты хода";
+stepResults.nextButtonTitle = "Продолжить";
+
 errorAlertDefault.title = "Ошибка";
 errorAlertDefault.message = "Что-то пошло не так...";
 errorAlertDefault.okAction = "Ок";

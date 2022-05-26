@@ -44,6 +44,10 @@ enum LocalizedString {
 
         static var sendCard: String { "game.sendCard".localized() }
     }
+    enum StepResults {
+        static var title: String { "stepResults.title".localized() }
+        static var nextButtonTitle: String { "stepResults.nextButtonTitle".localized() }
+    }
     enum ErrorAlertDefault {
         static var title: String { "errorAlertDefault.title".localized() }
         static var message: String { "errorAlertDefault.message".localized() }

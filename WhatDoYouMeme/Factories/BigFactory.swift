@@ -43,8 +43,23 @@ final class BigFactory {
 
     func makeGameVC(gameId: String, withNavigator: Bool = false) -> UIViewController {
         let interactor = GameInteractor()
-        let gameVC = GameController(interactor: interactor, gameId: gameId)
+        let coordinator = GameCoordinator()
+        let gameVC = GameController(interactor: interactor, coordinator: coordinator, gameId: gameId)
         return withNavigator ? gameVC.navigated(by: makeNavigator()) : gameVC
+    }
+
+    func makeStepResultsVC(
+        situation: String,
+        steppedPlayers: [Game.Step.SteppedPlayer],
+        withNavigator: Bool = false
+    ) -> UIViewController {
+        let interactor = StepResutlsInteractor()
+        let stepResultsVC = StepResultsController(
+            interactor: interactor,
+            situation: situation,
+            steppedPlayers: steppedPlayers
+        )
+        return withNavigator ? stepResultsVC.navigated(by: makeNavigator()) : stepResultsVC
     }
 }
 
